@@ -109,6 +109,15 @@ try:
 					csock.send(message.encode())
 					fail_light()
 			elif data == "STOP":
+				message = "STOPPING"
+				sock_stat = csock.send(message.encode())
+				if sock_stat != 0:
+					send_light()
+				else:
+					message = "FAIL"
+					csock.send(message.encode())
+					fail_light()
+					
 				shutdown()
 				break;
 			elif data == "GIVE_NAME":
