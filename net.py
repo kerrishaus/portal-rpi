@@ -91,10 +91,10 @@ def shutdown():
 class Timer:
 	start_time = time.monotonic()
 
-	def getElapsedTime():
+	def getElapsedTime(self):
 		return time.monotonic() - start_time
 
-	def reset():
+	def reset(self):
 		last_time = getElapsedTime()
 		start_time = time.monotonic()
 		return last_time
