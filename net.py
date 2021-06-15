@@ -63,6 +63,21 @@ send_light()
 
 my_name = "Raspberry Pi"
 
+def shutdown():
+	x = post_api("status", {"deviceid":"2","status":"0","token":"NO-TOKEN"})
+	if x.status_code:
+		send_light()
+	else:
+		print("failed to alert api of status: " + x.status_code)
+		fail_light()
+		
+	fail_light()
+	fail_light()
+	fail_light()
+		
+	GPIO.cleanup()
+	s.close();
+
 try:
 	while True:
 		csock, caddr = s.accept()
@@ -93,6 +108,9 @@ try:
 					message = "FAIL"
 					csock.send(message.encode())
 					fail_light()
+			elif data == "STOP":
+				shutdown()
+				break;
 			elif data == "GIVE_NAME":
 				message = my_name
 			elif data == "PLATFORM_INFO":
@@ -111,12 +129,4 @@ try:
 
 		csock.close()
 except KeyboardInterrupt:
-	GPIO.cleanup()
-	s.close();
-
-	x = post_api("status", {"deviceid":"2","status":"0","token":"NO-TOKEN"})
-	if x.status_code:
-		send_light()
-	else:
-		print("failed to alert api of status: " + x.status_code)
-		fail_light()
+	shutdown()
