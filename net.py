@@ -92,11 +92,11 @@ class Timer:
 	start_time = time.monotonic()
 
 	def getElapsedTime(self):
-		return time.monotonic() - start_time
+		return time.monotonic() - self.start_time
 
 	def reset(self):
-		last_time = getElapsedTime()
-		start_time = time.monotonic()
+		last_time = self.getElapsedTime()
+		self.start_time = time.monotonic()
 		return last_time
 
 api_timer = Timer()
