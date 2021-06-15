@@ -60,8 +60,10 @@ else:
 
 s = socket.socket()
 if s.bind(("0.0.0.0", 27000)):
+	print("Socket bound.")
 	send_light()
 else:
+	print("Failed to bind socket");
 	fail_light()
 	exit()
 
