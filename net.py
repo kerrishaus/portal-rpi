@@ -88,17 +88,29 @@ def shutdown():
 	GPIO.cleanup()
 	s.close()
 
-timer_start = time.monotonic()
+class Timer:
+	start_time = time.monotonic()
+
+	def getElapsedTime():
+		return time.monotonic() - start_time
+
+	def reset():
+		last_time = getElapsedTime()
+		start_time = time.monotonic()
+		return last_time
+
+api_timer = Timer()
 
 try:
 	while True:
-		if time.monotonic - timer_start > 1:
+		if api_timer.getElapsedTime() > 1:
 			x = post_api("status", {"deviceid":"2","status":"1","token":"NO-TOKEN"})
 			if x.status_code:
 				send_light()
 			else:
 				print("failed to alert api of status: " + x.status_code)
 				fail_light()
+			api_timer.reset()
 
 		csock, caddr = s.accept()
 		data = csock.recv(1024)
