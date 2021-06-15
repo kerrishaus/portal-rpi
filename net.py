@@ -113,3 +113,10 @@ try:
 except KeyboardInterrupt:
 	GPIO.cleanup()
 	s.close();
+
+	x = post_api("status", {"deviceid":"2","status":"0","token":"NO-TOKEN"})
+	if x.status_code:
+		send_light()
+	else:
+		print("failed to alert api of status: " + x.status_code)
+		fail_light()
