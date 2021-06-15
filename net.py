@@ -8,7 +8,7 @@ import requests
 
 VERSION = 1
 
-print("Starting Portal Client v" + VERSION)
+print("Starting Portal Client v" + str(VERSION))
 
 FAIL_LED_PIN = 17
 RECV_LED_PIN = 27
