@@ -63,6 +63,7 @@ if s.bind(("0.0.0.0", 27000)):
 	send_light()
 else:
 	fail_light()
+	exit()
 
 if s.listen():
 	send_light()
