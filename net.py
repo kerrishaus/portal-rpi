@@ -57,12 +57,12 @@ else:
 s = socket.socket()
 if s.bind(("0.0.0.0", 27000)):
 	send_light()
-else
+else:
 	fail_light()
 
 if s.listen():
 	send_light()
-else
+else:
 	fail_light()
 
 send_light()
