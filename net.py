@@ -6,6 +6,10 @@ import socket
 import subprocess
 import requests
 
+VERSION = 1
+
+print("Starting Portal Client v" + VERSION)
+
 FAIL_LED_PIN = 17
 RECV_LED_PIN = 27
 SEND_LED_PIN = 22
@@ -82,10 +86,20 @@ def shutdown():
 	fail_light()
 		
 	GPIO.cleanup()
-	s.close();
+	s.close()
+
+timer_start = time.monotonic()
 
 try:
 	while True:
+		if time.monotonic - timer_start > 1:
+			x = post_api("status", {"deviceid":"2","status":"1","token":"NO-TOKEN"})
+			if x.status_code:
+				send_light()
+			else:
+				print("failed to alert api of status: " + x.status_code)
+				fail_light()
+
 		csock, caddr = s.accept()
 		data = csock.recv(1024)
 		if data:
@@ -136,7 +150,7 @@ try:
 					fail_light()
 					
 				shutdown()
-				break;
+				break
 			elif data == "GIVE_NAME":
 				message = my_name
 			elif data == "PLATFORM_INFO":
