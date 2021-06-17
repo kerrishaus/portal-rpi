@@ -166,6 +166,7 @@ try:
 				else:
 					fail_light()
 		else:
+			print("Socket connected, but no data was received.")
 			fail_light()
 except KeyboardInterrupt:
 	shutdown()
