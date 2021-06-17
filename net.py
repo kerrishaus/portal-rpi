@@ -127,7 +127,7 @@ try:
 					message = "FAIL"
 					csock.send(message.encode())
 					fail_light()
-			if data == "TELL_HIM_HES_UGLY":
+			elif data == "TELL_HIM_HES_UGLY":
 				print("You can't even do that righ!")
 				message = "YOU'RE CHUBBY!"
 				sock_stat = csock.send(message.encode())
