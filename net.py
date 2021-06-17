@@ -100,14 +100,14 @@ api_timer = Timer()
 
 try:
 	while True:
-		if api_timer.getElapsedTime() > 1:
-			x = post_api("status", {"deviceid":"2","status":"1","token":"NO-TOKEN"})
-			if x.status_code:
-				send_light()
-			else:
-				print("failed to alert api of status: " + x.status_code)
-				fail_light()
-			api_timer.reset()
+		#if api_timer.getElapsedTime() > 1:
+		#	x = post_api("status", {"deviceid":"2","status":"1","token":"NO-TOKEN"})
+		#	if x.status_code:
+		#		send_light()
+		#	else:
+		#		print("failed to alert api of status: " + x.status_code)
+		#		fail_light()
+		#	api_timer.reset()
 
 		csock, caddr = s.accept()
 		data = csock.recv(1024)
