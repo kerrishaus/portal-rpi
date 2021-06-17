@@ -138,6 +138,16 @@ try:
 					message = "FAIL"
 					csock.send(message.encode())
 					fail_light()
+			elif data == "DISCONNECT":
+				message = "BYE"
+				sock_stat = csock.send(message.encode())
+				if sock_stat != 0:
+					send_light()
+					csock.close()
+				else:
+					message = "FAIL"
+					csock.send(message.encode())
+					fail_light()
 			elif data == "REBOOT":
 				message = "REBOOTING"
 				sock_stat = csock.send(message.encode())
@@ -175,7 +185,5 @@ try:
 				fail_light()
 		else:
 			fail_light()
-
-		csock.close()
 except KeyboardInterrupt:
 	shutdown()
