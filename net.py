@@ -133,8 +133,7 @@ try:
 			elif data == "TELL_HIM_HES_UGLY":
 				print("You can't even do that righ!")
 				message = "YOU'RE CHUBBY!"
-				if send_message(message):
-					os.system("poweroff")
+				send_message(message)
 
 			elif data == "DISCONNECT":
 				message = "BYE"
@@ -151,6 +150,7 @@ try:
 				send_message(message)
 				shutdown()
 				break
+
 			else:
 				if data == "GIVE_NAME":
 					message = my_name
