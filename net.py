@@ -85,6 +85,14 @@ def shutdown():
 	GPIO.cleanup()
 	s.close()
 
+def send_message(message):
+	sent = csock.send(message.encode())
+	if sent != 0:
+		send_light()
+	else:
+		fail_light()
+	return sent
+
 class Timer:
 	start_time = time.monotonic()
 
@@ -119,70 +127,44 @@ try:
 			if data == "SHUTDOWN":
 				print("shutting down")
 				message = "SHUTTING_DOWN"
-				sock_stat = csock.send(message.encode())
-				if sock_stat != 0:
-					send_light()
+				if send_message(message):
 					os.system("poweroff")
-				else:
-					message = "FAIL"
-					csock.send(message.encode())
-					fail_light()
+
 			elif data == "TELL_HIM_HES_UGLY":
 				print("You can't even do that righ!")
 				message = "YOU'RE CHUBBY!"
-				sock_stat = csock.send(message.encode())
-				if sock_stat != 0:
-					send_light()
+				if send_message(message):
 					os.system("poweroff")
-				else:
-					message = "FAIL"
-					csock.send(message.encode())
-					fail_light()
+
 			elif data == "DISCONNECT":
 				message = "BYE"
-				sock_stat = csock.send(message.encode())
-				if sock_stat != 0:
-					send_light()
+				if send_message(message):
 					csock.close()
-				else:
-					message = "FAIL"
-					csock.send(message.encode())
-					fail_light()
+
 			elif data == "REBOOT":
 				message = "REBOOTING"
-				sock_stat = csock.send(message.encode())
-				if sock_stat != 0:
-					send_light()
+				if send_message(message):
 					subprocess.Popen(['sudo', 'shutdown','-r','now'])
-				else:
-					message = "FAIL"
-					csock.send(message.encode())
-					fail_light()
+
 			elif data == "STOP":
 				message = "STOPPING"
-				sock_stat = csock.send(message.encode())
-				if sock_stat != 0:
-					send_light()
-				else:
-					message = "FAIL"
-					csock.send(message.encode())
-					fail_light()
-					
+				send_message(message)
 				shutdown()
 				break
-			elif data == "GIVE_NAME":
-				message = my_name
-			elif data == "PLATFORM_INFO":
-				message = os.name + " " + platform.system() + " " + platform.release()
 			else:
-				message = "UNKNOWN_COMMAND"
+				if data == "GIVE_NAME":
+					message = my_name
+				elif data == "PLATFORM_INFO":
+					message = os.name + " " + platform.system() + " " + platform.release()
+				else:
+					message = "UNKNOWN_COMMAND"
 
-			sent_bytes = csock.send(message.encode())
+				sent_bytes = csock.send(message.encode())
 
-			if sent_bytes != 0:
-				send_light()
-			else:
-				fail_light()
+				if sent_bytes != 0:
+					send_light()
+				else:
+					fail_light()
 		else:
 			fail_light()
 except KeyboardInterrupt:
