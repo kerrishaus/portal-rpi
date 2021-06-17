@@ -170,6 +170,7 @@ try:
 				print("Socket connected, but no data was received.")
 				fail_light()
 		finally:
-			csock.close();
+			print("Closing socket")
+			csock.close()
 except KeyboardInterrupt:
 	shutdown()
