@@ -16,6 +16,8 @@ print("Starting Portal Client v" + str(VERSION))
 
 #config.load_config()
 
+print("My name is " + config.my_name + ".")
+
 lights.setup()
 
 lights.fail_light()
@@ -44,6 +46,8 @@ else:
 	lights.fail_light()
 
 lights.send_light()
+
+print("Portal Client is ready.")
 
 def shutdown():
 	x = kunapi.post("status", {"deviceid":"2","status":"0","token":"NO-TOKEN"})
