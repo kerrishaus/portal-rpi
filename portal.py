@@ -5,8 +5,8 @@ import socket
 import subprocess
 import requests
 
-import lights
-import timer
+import util.lights
+import util.timer
 
 VERSION = 1
 

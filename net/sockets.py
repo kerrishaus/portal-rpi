@@ -8,16 +8,6 @@ import requests
 import lights
 import timer
 
-VERSION = 1
-
-print("Starting Portal Client v" + str(VERSION))
-
-lights.setup()
-
-lights.fail_light()
-lights.recv_light()
-lights.send_light(1)
-
 def post_api(endpoint, payload):
 	r = requests.post("https://api.kunindustries.com/portal/devices/" + endpoint + ".php", data = payload)
 	lights.send_light()
