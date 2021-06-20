@@ -8,8 +8,6 @@ from util import lights
 from util import timer
 
 from net import kunapi
-from net import net
-from net import sockets
 
 VERSION = 1
 
