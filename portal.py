@@ -57,9 +57,7 @@ def shutdown():
 		print("failed to notify api of change in status: " + x.status_code)
 		lights.fail_light()
 		
-	lights.fail_light()
-	lights.fail_light()
-	lights.fail_light()
+	lights.fail_light(3)
 		
 	lights.cleanup()
 	s.close()
@@ -86,7 +84,7 @@ try:
 		#	api_timer.reset()
 
 		csock, caddr = s.accept()
-		print("/ACCEPTED SOCKET")
+		print("/ ACCEPTED SOCKET")
 		try:
 			while True:
 				data = csock.recv(1024)
@@ -94,7 +92,7 @@ try:
 					lights.recv_light()
 
 					data = data.decode()
-					print(data)
+					print("> " + data)
 					if data == "SHUTDOWN":
 						print("shutting down")
 						message = "SHUTTING_DOWN"
@@ -155,7 +153,7 @@ try:
 					print("Socket connected, but no data was received.")
 					lights.fail_light()
 		finally:
-			print("\CLOSING SOCKET")
+			print("\ CLOSING SOCKET")
 			csock.close()
 except KeyboardInterrupt:
 	shutdown()
