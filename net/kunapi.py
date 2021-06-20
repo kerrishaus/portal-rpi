@@ -1,6 +1,6 @@
 import requests
 
-from .util import lights
+from ..util import lights
 
 def post(endpoint, payload):
 	r = requests.post("https://api.kunindustries.com/portal/devices/" + endpoint + ".php", data = payload)
