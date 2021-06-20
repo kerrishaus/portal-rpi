@@ -6,12 +6,15 @@ import subprocess
 
 from util import lights
 from util import timer
+from util import config
 
 from net import kunapi
 
 VERSION = 1
 
 print("Starting Portal Client v" + str(VERSION))
+
+config.load_config()
 
 lights.setup()
 
@@ -41,8 +44,6 @@ else:
 	lights.fail_light()
 
 lights.send_light()
-
-my_name = "Raspberry Pi"
 
 def shutdown():
 	x = kunapi.post("status", {"deviceid":"2","status":"0","token":"NO-TOKEN"})
@@ -118,9 +119,21 @@ try:
 						shutdown()
 						break
 
+					elif data == "SET_NAME":
+						send_message("OKAY_GIVE_NAME")
+
+						data = csock.recv(1024)
+						if data:
+							new_name = data.decode()
+							config.updateConfig("DEFAULT", "MyName", new_name)
+							my_name = new_name
+							send_message("NAME_SET")
+						else:
+							send_message("FAIL_INVALID_DATA")
+
 					else:
 						if data == "GIVE_NAME":
-							message = my_name
+							message = config.my_name
 						elif data == "PLATFORM_INFO":
 							message = os.name + " " + platform.system() + " " + platform.release()
 						else:
