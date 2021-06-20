@@ -25,7 +25,7 @@ lights.recv_light()
 lights.send_light(1)
 
 payload = {
-	"deviceid": "2",
+	"deviceid": portal_device_id,
 	"status": "1",
 	"token": "NO-TOKEN"
 }
@@ -95,31 +95,26 @@ try:
 					print("> " + data)
 					if data == "SHUTDOWN":
 						print("shutting down")
-						message = "SHUTTING_DOWN"
-						if send_message(message):
+						if send_message("SHUTTING_DOWN"):
 							os.system("poweroff")
 
-					elif data == "TELL_HIM_HES_UGLY":
-						print("You can't even do that righ!")
-						message = "YOU'RE CHUBBY!"
-						send_message(message)
-
-					elif data == "DISCONNECT":
-						message = "BYE"
-						if send_message(message):
-							csock.close()
-							break
-
 					elif data == "REBOOT":
-						message = "REBOOTING"
-						if send_message(message):
+						if send_message("REBOOTING"):
 							subprocess.Popen(['sudo', 'shutdown','-r','now'])
 
 					elif data == "STOP":
-						message = "STOPPING"
-						send_message(message)
+						send_message("STOPPING")
 						shutdown()
 						break
+
+					elif data == "TELL_HIM_HES_UGLY":
+						print("You can't even do that righ!")
+						send_message("YOU'RE CHUBBY")
+
+					elif data == "DISCONNECT":
+						if send_message("BYE_BYE"):
+							csock.close()
+							break
 
 					elif data == "SET_NAME":
 						send_message("OKAY_GIVE_NAME")
@@ -143,12 +138,7 @@ try:
 						else:
 							message = "UNKNOWN_COMMAND"
 
-						sent_bytes = csock.send(message.encode())
-
-						if sent_bytes != 0:
-							lights.send_light()
-						else:
-							lights.fail_light()
+						send_message(message)
 				else:
 					print("Socket connected, but no data was received.")
 					lights.fail_light()

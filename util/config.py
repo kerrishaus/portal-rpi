@@ -4,6 +4,7 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 my_name = config['DEFAULT']['MyName']
+portal_device_id = config['DEFAULT']['DeviceID']
 api_token = config['KUNINDUSTRIES_API']['Token']
 api_status_interval = config['KUNINDUSTRIES_API']['StatusInterval']
 api_status_interval = config['KUNINDUSTRIES_API']['AutoUpdateAddressAndPort']
