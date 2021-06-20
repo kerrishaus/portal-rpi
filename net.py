@@ -14,9 +14,9 @@ print("Starting Portal Client v" + str(VERSION))
 
 lights.setup()
 
-fail_light()
-recv_light()
-send_light(1)
+lights.fail_light()
+lights.recv_light()
+lights.send_light(1)
 
 def post_api(endpoint, payload):
 	r = requests.post("https://api.kunindustries.com/portal/devices/" + endpoint + ".php", data = payload)
