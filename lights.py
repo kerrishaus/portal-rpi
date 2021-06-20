@@ -5,12 +5,16 @@ FAIL_LED_PIN = 17
 RECV_LED_PIN = 27
 SEND_LED_PIN = 22
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(RECV_LED_PIN, GPIO.OUT)
-GPIO.setup(SEND_LED_PIN, GPIO.OUT)
-GPIO.setup(FAIL_LED_PIN, GPIO.OUT)
-
 light_duration = .08
+
+def setup():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(RECV_LED_PIN, GPIO.OUT)
+    GPIO.setup(SEND_LED_PIN, GPIO.OUT)
+    GPIO.setup(FAIL_LED_PIN, GPIO.OUT)
+
+def cleanup():
+    GPIO.cleanup()
 
 def send_light(duration = light_duration):
 	GPIO.output(SEND_LED_PIN, GPIO.HIGH)

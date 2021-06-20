@@ -6,10 +6,13 @@ import subprocess
 import requests
 
 import lights
+import timer
 
 VERSION = 1
 
 print("Starting Portal Client v" + str(VERSION))
+
+lights.setup()
 
 fail_light()
 recv_light()
@@ -17,7 +20,7 @@ send_light(1)
 
 def post_api(endpoint, payload):
 	r = requests.post("https://api.kunindustries.com/portal/devices/" + endpoint + ".php", data = payload)
-	send_light()
+	lights.send_light()
 	return r
 
 payload = {
@@ -28,58 +31,47 @@ payload = {
 
 x = post_api("status", payload)
 if x.status_code:
-	send_light()
+	lights.send_light()
 else:
 	print("failed to alert api of status: " + x.status_code)
-	fail_light()
+	lights.fail_light()
 
 s = socket.socket()
 s.bind(("0.0.0.0", 27000))
 
 if s.listen():
-	send_light()
+	lights.send_light()
 else:
-	fail_light()
+	lights.fail_light()
 
-send_light()
+lights.send_light()
 
 my_name = "Raspberry Pi"
 
 def shutdown():
 	x = post_api("status", {"deviceid":"2","status":"0","token":"NO-TOKEN"})
 	if x.status_code:
-		send_light()
+		lights.send_light()
 	else:
 		print("failed to alert api of status: " + x.status_code)
-		fail_light()
+		lights.fail_light()
 		
-	fail_light()
-	fail_light()
-	fail_light()
+	lights.fail_light()
+	lights.fail_light()
+	lights.fail_light()
 		
-	GPIO.cleanup()
+	lights.cleanup()
 	s.close()
 
 def send_message(message):
 	sent = csock.send(message.encode())
 	if sent != 0:
-		send_light()
+		lights.send_light()
 	else:
-		fail_light()
+		lights.fail_light()
 	return sent
 
-class Timer:
-	start_time = time.monotonic()
-
-	def getElapsedTime(self):
-		return time.monotonic() - self.start_time
-
-	def reset(self):
-		last_time = self.getElapsedTime()
-		self.start_time = time.monotonic()
-		return last_time
-
-api_timer = Timer()
+api_timer = timer.Timer()
 
 try:
 	while True:
@@ -97,7 +89,7 @@ try:
 			while True:
 				data = csock.recv(1024)
 				if data:
-					recv_light()
+					lights.recv_light()
 
 					data = data.decode()
 					print(data)
@@ -140,12 +132,12 @@ try:
 						sent_bytes = csock.send(message.encode())
 
 						if sent_bytes != 0:
-							send_light()
+							lights.send_light()
 						else:
-							fail_light()
+							lights.fail_light()
 				else:
 					print("Socket connected, but no data was received.")
-					fail_light()
+					lights.fail_light()
 		finally:
 			print("Closing socket")
 			csock.close()
