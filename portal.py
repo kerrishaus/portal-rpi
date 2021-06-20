@@ -3,10 +3,13 @@ import os
 import platform
 import socket
 import subprocess
-import requests
 
-import util.lights
-import util.timer
+from .util import lights
+from .util import timer
+
+from .net import kunapi
+from .net import net
+from .net import sockets
 
 VERSION = 1
 
@@ -18,18 +21,13 @@ lights.fail_light()
 lights.recv_light()
 lights.send_light(1)
 
-def post_api(endpoint, payload):
-	r = requests.post("https://api.kunindustries.com/portal/devices/" + endpoint + ".php", data = payload)
-	lights.send_light()
-	return r
-
 payload = {
 	"deviceid": "2",
 	"status": "1",
 	"token": "NO-TOKEN"
 }
 
-x = post_api("status", payload)
+x = kunapi.post("status", payload)
 if x.status_code:
 	lights.send_light()
 else:
@@ -49,11 +47,11 @@ lights.send_light()
 my_name = "Raspberry Pi"
 
 def shutdown():
-	x = post_api("status", {"deviceid":"2","status":"0","token":"NO-TOKEN"})
+	x = kunapi.post("status", {"deviceid":"2","status":"0","token":"NO-TOKEN"})
 	if x.status_code:
 		lights.send_light()
 	else:
-		print("failed to alert api of status: " + x.status_code)
+		print("failed to notify api of change in status: " + x.status_code)
 		lights.fail_light()
 		
 	lights.fail_light()
