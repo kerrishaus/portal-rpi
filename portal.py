@@ -14,7 +14,7 @@ VERSION = 1
 
 print("Starting Portal Client v" + str(VERSION))
 
-config.load_config()
+#config.load_config()
 
 lights.setup()
 
@@ -82,7 +82,7 @@ try:
 		#	api_timer.reset()
 
 		csock, caddr = s.accept()
-		print("ACCEPTED SOCKET")
+		print("/ACCEPTED SOCKET")
 		try:
 			while True:
 				data = csock.recv(1024)
@@ -126,9 +126,11 @@ try:
 						if data:
 							new_name = data.decode()
 							config.updateConfig("DEFAULT", "MyName", new_name)
-							my_name = new_name
+							config.my_name = new_name
+							print("my new name is " + config.my_name)
 							send_message("NAME_SET")
 						else:
+							print("NO name given")
 							send_message("FAIL_INVALID_DATA")
 
 					else:
@@ -149,7 +151,7 @@ try:
 					print("Socket connected, but no data was received.")
 					lights.fail_light()
 		finally:
-			print("CLOSING SOCKET")
+			print("\CLOSING SOCKET")
 			csock.close()
 except KeyboardInterrupt:
 	shutdown()
