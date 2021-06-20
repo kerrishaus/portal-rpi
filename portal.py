@@ -25,7 +25,7 @@ lights.recv_light()
 lights.send_light(1)
 
 payload = {
-	"deviceid": api_device_id,
+	"deviceid": config.api_device_id,
 	"status": "1",
 	"token": "NO-TOKEN"
 }
