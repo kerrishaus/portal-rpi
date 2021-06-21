@@ -10,6 +10,7 @@ from net import kunapi
 
 gpio.setup()
 
+lights.setup()
 motion.setup()
 
 def update():
