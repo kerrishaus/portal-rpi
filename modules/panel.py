@@ -10,6 +10,8 @@ from net import kunapi
 
 gpio.setup()
 
+motion.setup()
+
 def update():
 	while True:
 		if GPIO.input(motion.MOTION_SENSOR_PIN):
