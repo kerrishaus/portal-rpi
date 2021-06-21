@@ -13,8 +13,12 @@ gpio.setup()
 motion.setup()
 
 def update():
+	previous = False
 	while True:
-		if GPIO.input(motion.MOTION_SENSOR_PIN):
-			print("Motion Detected!")
-		time.sleep(1)
+		motionDetected = GPIO.input(motion.MOTION_SENSOR_PIN)
+		if motionDetected:
+			if previous != motionDetected:
+				print("Motion Detected!")
+			previous = motionDetected
+		time.sleep(.5)
 	return
