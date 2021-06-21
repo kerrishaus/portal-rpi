@@ -1,6 +1,6 @@
 import time
 
-from RPi.GPIO import GPIO
+import RPi.GPIO as GPIO
 
 from util.gpio import lights
 from util.gpio import motion
