@@ -1,8 +1,8 @@
-#from modules import panel
+from modules import panel
 
-#panel.update()
+panel.update()
 
-#exit()
+exit()
 
 import time
 import os
