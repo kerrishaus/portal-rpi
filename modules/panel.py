@@ -19,6 +19,6 @@ def update():
 		if motionDetected:
 			if previous != motionDetected:
 				print("Motion Detected!")
-			previous = motionDetected
+		previous = motionDetected
 		time.sleep(.5)
 	return
