@@ -17,5 +17,6 @@ def update():
 		motionDetected = GPIO.input(motion.MOTION_SENSOR_PIN)
 		if motionDetected:
 			print("Motion Detected!" + str(time.time()))
+			lights.send_light()
 		time.sleep(.5)
 	return
