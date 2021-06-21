@@ -16,6 +16,6 @@ def update():
 	while True:
 		motionDetected = GPIO.input(motion.MOTION_SENSOR_PIN)
 		if motionDetected:
-			print("Motion Detected!")
+			print("Motion Detected!" + time.time())
 		time.sleep(.5)
 	return
