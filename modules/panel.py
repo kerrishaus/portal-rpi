@@ -2,9 +2,13 @@ import time
 
 import RPi.GPIO as GPIO
 
+from util import gpio
 from util.gpio import lights
 from util.gpio import motion
+
 from net import kunapi
+
+gpio.setup()
 
 def update():
 	while True:
