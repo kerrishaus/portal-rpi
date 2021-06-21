@@ -1,3 +1,9 @@
+#from modules import panel
+
+#panel.update()
+
+#exit()
+
 import time
 import os
 import platform
