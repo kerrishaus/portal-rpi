@@ -4,7 +4,9 @@ import platform
 import socket
 import subprocess
 
-from util import lights
+from util import gpio
+from util.gpio import lights
+from util.gpio import motion
 from util import timer
 from util import config
 
@@ -18,11 +20,14 @@ print("Starting Portal Client v" + str(VERSION))
 
 print("My name is " + config.my_name + ".")
 
-lights.setup()
+gpio.setup()
 
+lights.setup()
 lights.fail_light()
 lights.recv_light()
 lights.send_light(1)
+
+motion.setup()
 
 payload = {
 	"deviceid": config.api_device_id,
@@ -59,7 +64,7 @@ def shutdown():
 		
 	lights.fail_light(3)
 		
-	lights.cleanup()
+	gpio.cleanup()
 	s.close()
 
 def send_message(message):
