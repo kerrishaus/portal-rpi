@@ -8,6 +8,7 @@ import time
 import os
 import platform
 import socket
+import selectors
 import subprocess
 
 from util import gpio
