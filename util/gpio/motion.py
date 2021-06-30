@@ -9,10 +9,14 @@ from net import kunapi
 
 MOTION_SENSOR_PIN = 14
 
+motion = False
+
 def setup():
     GPIO.setup(MOTION_SENSOR_PIN, GPIO.IN)
 
-def update(motion):
+def update():
+    global motion
+
     if GPIO.input(MOTION_SENSOR_PIN):
         if not motion:
             motion = True

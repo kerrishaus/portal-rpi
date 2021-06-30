@@ -59,8 +59,6 @@ def send_message(message):
 api_timer = timer.Timer()
 light_timer = timer.Timer()
 
-motionOn = False
-
 try:
 	running = True
 	while running: # this is the socket accept loop
@@ -69,7 +67,7 @@ try:
 			api_timer.reset()
 
 		if config.my_purpose == "Motion":
-			motion.update(motionOn)
+			motion.update()
 
 		try:
 			csock, caddr = listen.s.accept()
