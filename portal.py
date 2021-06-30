@@ -1,18 +1,12 @@
-#from modules import panel
-
-#panel.update()
-
-#exit()
-
 import time
 import os
 import platform
 import socket
+import selectors
 import subprocess
 
 from util import gpio
 from util.gpio import lights
-from util.gpio import motion
 from util import timer
 from util import config
 
@@ -20,33 +14,18 @@ from net import kunapi
 
 VERSION = 1
 
-print("Starting Portal Client v" + str(VERSION))
+print("Starting Portal Client " + str(VERSION))
 
+# config is currently autoloaded
 #config.load_config()
 
 print("My name is " + config.my_name + ".")
 
 gpio.setup()
-
 lights.setup()
-lights.fail_light()
-lights.recv_light()
-lights.send_light(1)
 
-motion.setup()
-
-payload = {
-	"deviceid": config.api_device_id,
-	"status": "1",
-	"token": "NO-TOKEN"
-}
-
-x = kunapi.post("status", payload)
-if x.status_code:
-	lights.send_light()
-else:
+if not kunapi.status(1):
 	print("failed to alert api of status: " + x.status_code)
-	lights.fail_light()
 
 s = socket.socket()
 s.bind(("0.0.0.0", 27000))
@@ -61,10 +40,7 @@ lights.send_light()
 print("Portal Client is ready.")
 
 def shutdown():
-	x = kunapi.post("status", {"deviceid":"2","status":"0","token":"NO-TOKEN"})
-	if x.status_code:
-		lights.send_light()
-	else:
+	if not kunapi.status(0):
 		print("failed to notify api of change in status: " + x.status_code)
 		lights.fail_light()
 		
