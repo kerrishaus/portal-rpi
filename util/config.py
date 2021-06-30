@@ -15,15 +15,15 @@ if not os.path.exists(configLocation):
 else:
 	config.read(configLocation)
 
-	my_name = config['DEFAULT']['MyName']
-	my_addr = config['DEFAULT']['MyAddr']
-	my_port = int(config['DEFAULT']['MyPort'])
-	my_purpose = config['DEFAULT']['MyPurpose']
+my_name = config['DEFAULT']['MyName']
+my_addr = config['DEFAULT']['MyAddr']
+my_port = int(config['DEFAULT']['MyPort'])
+my_purpose = config['DEFAULT']['MyPurpose']
 
-	api_token = config['KUNINDUSTRIES_API']['Token']
-	api_status_interval = float(config['KUNINDUSTRIES_API']['StatusInterval'])
-	api_auto_update_addr_and_port = config['KUNINDUSTRIES_API']['AutoUpdateAddressAndPort']
-	api_device_id = config['KUNINDUSTRIES_API']['DeviceID']
+api_token = config['KUNINDUSTRIES_API']['Token']
+api_status_interval = float(config['KUNINDUSTRIES_API']['StatusInterval'])
+api_auto_update_addr_and_port = config['KUNINDUSTRIES_API']['AutoUpdateAddressAndPort']
+api_device_id = config['KUNINDUSTRIES_API']['DeviceID']
 
 def updateConfig(section, key, value):
 	config[section][key] = value
