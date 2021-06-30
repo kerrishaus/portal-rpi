@@ -18,14 +18,14 @@ def update(motion):
     if GPIO.input(MOTION_SENSOR_PIN):
         if not motion:
             motion = True
-            run('vcgencmd display_power 1', shell=True)
+            subprocess.run('vcgencmd display_power 1', shell=True)
             kunapi.status(3)
     else:
         if motion:
             motion = False
             kunapi.status(4)
             # dont know if i want to do this just yet
-            #run('vcgencmd display_power 0', shell=True)
+            #subprocess.run('vcgencmd display_power 0', shell=True)
 
     time.sleep(3)
     return
