@@ -1,8 +1,6 @@
 import time
 import os
 import platform
-import socket
-import selectors
 import subprocess
 
 from util import gpio
@@ -10,6 +8,7 @@ from util.gpio import lights
 from util import timer
 from util import config
 
+from net import listen
 from net import kunapi
 
 VERSION = 1
@@ -21,34 +20,31 @@ print("Starting Portal Client " + str(VERSION))
 
 print("My name is " + config.my_name + ".")
 print("I am device " + config.api_device_id)
+print("My purpose is " + config.my_purpose)
 
 gpio.setup()
 lights.setup()
+listen.setup()
 
 if not kunapi.status(1):
-	print("failed to alert api of status: " + x.status_code)
-
-s = socket.socket()
-s.bind(("0.0.0.0", 27000))
-
-if s.listen():
-	lights.send_light()
-else:
-	lights.fail_light()
+	print("failed to alert api of status")
 
 lights.send_light()
 
 print("Portal Client is ready.")
 
+if config.my_purpose == "Motion":
+	from util.gpio import motion
+
 def shutdown():
 	if not kunapi.status(0):
-		print("failed to notify api of change in status: " + x.status_code)
+		print("failed to notify api of change in status")
 		lights.fail_light()
 		
 	lights.fail_light(3)
 		
 	gpio.cleanup()
-	s.close()
+	listen.close()
 
 def send_message(message):
 	sent = csock.send(message.encode())
@@ -60,78 +56,82 @@ def send_message(message):
 
 api_timer = timer.Timer()
 
-try:
-	while True:
-		#if api_timer.getElapsedTime() > 1:
-		#	x = post_api("status", {"deviceid":"2","status":"1","token":"NO-TOKEN"})
-		#	if x.status_code:
-		#		send_light()
-		#	else:
-		#		print("failed to alert api of status: " + x.status_code)
-		#		fail_light()
-		#	api_timer.reset()
+try: # this is the socket accept loop
+	#if api_timer.getElapsedTime() > 1:
+	#	x = post_api("status", {"deviceid":"2","status":"1","token":"NO-TOKEN"})
+	#	if x.status_code:
+	#		send_light()
+	#	else:
+	#		print("failed to alert api of status: " + x.status_code)
+	#		fail_light()
+	#	api_timer.reset()
 
-		csock, caddr = s.accept()
-		print("/ ACCEPTED SOCKET")
-		try:
-			while True:
-				data = csock.recv(1024)
-				if data:
-					lights.recv_light()
+	csock, caddr = listen.accept()
+	csock.settimeout(.1)
+	print("/ ACCEPTED SOCKET")
+	try: # this is the client communication loop
+		while True:
+			data = csock.recv(1024)
+			if data:
+				lights.recv_light()
 
-					data = data.decode()
-					print("> " + data)
-					if data == "SHUTDOWN":
-						print("shutting down")
-						if send_message("SHUTTING_DOWN"):
-							os.system("poweroff")
+				data = data.decode()
+				print("> " + data)
+				if data == "SHUTDOWN":
+					print("shutting down")
+					if send_message("SHUTTING_DOWN"):
+						os.system("poweroff")
 
-					elif data == "REBOOT":
-						if send_message("REBOOTING"):
-							subprocess.Popen(['sudo', 'shutdown','-r','now'])
+				elif data == "REBOOT":
+					if send_message("REBOOTING"):
+						subprocess.Popen(['sudo', 'shutdown','-r','now'])
 
-					elif data == "STOP":
-						send_message("STOPPING")
-						shutdown()
+				elif data == "STOP":
+					send_message("STOPPING")
+					shutdown()
+					break
+
+				elif data == "TELL_HIM_HES_UGLY":
+					print("You can't even do that righ!")
+					send_message("YOU'RE CHUBBY")
+
+				elif data == "DISCONNECT":
+					if send_message("BYE_BYE"):
+						csock.close()
 						break
 
-					elif data == "TELL_HIM_HES_UGLY":
-						print("You can't even do that righ!")
-						send_message("YOU'RE CHUBBY")
+				elif data == "SET_NAME":
+					send_message("OKAY_GIVE_NAME")
 
-					elif data == "DISCONNECT":
-						if send_message("BYE_BYE"):
-							csock.close()
-							break
-
-					elif data == "SET_NAME":
-						send_message("OKAY_GIVE_NAME")
-
-						data = csock.recv(1024)
-						if data:
-							new_name = data.decode()
-							config.updateConfig("DEFAULT", "MyName", new_name)
-							config.my_name = new_name
-							print("my new name is " + config.my_name)
-							send_message("NAME_SET")
-						else:
-							print("NO name given")
-							send_message("FAIL_INVALID_DATA")
-
+					data = csock.recv(1024)
+					if data:
+						new_name = data.decode()
+						config.updateConfig("DEFAULT", "MyName", new_name)
+						config.my_name = new_name
+						print("my new name is " + config.my_name)
+						send_message("NAME_SET")
 					else:
-						if data == "GIVE_NAME":
-							message = config.my_name
-						elif data == "PLATFORM_INFO":
-							message = os.name + " " + platform.system() + " " + platform.release()
-						else:
-							message = "UNKNOWN_COMMAND"
+						print("NO name given")
+						send_message("FAIL_INVALID_DATA")
 
-						send_message(message)
 				else:
-					print("Socket connected, but no data was received.")
-					lights.fail_light()
-		finally:
-			print("\ CLOSING SOCKET")
-			csock.close()
+					if data == "GIVE_NAME":
+						message = config.my_name
+					elif data == "PLATFORM_INFO":
+						message = os.name + " " + platform.system() + " " + platform.release()
+					else:
+						message = "UNKNOWN_COMMAND"
+
+					send_message(message)
+			else:
+				print("Socket connected, but no data was received.")
+				lights.fail_light()
+	except listen.timeout:
+		print("socket timeout")
+	finally:
+		print("\ CLOSING SOCKET")
+		csock.close()
+except listen.timeout:
+	print("no new client")
 except KeyboardInterrupt:
 	shutdown()
