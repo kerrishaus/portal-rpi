@@ -56,20 +56,16 @@ def send_message(message):
 	return sent
 
 api_timer = timer.Timer()
+light_timer = timer.Timer()
 
 try:
 	running = True
 	while running: # this is the socket accept loop
-		try:
-			#if api_timer.getElapsedTime() > 1:
-			#	x = post_api("status", {"deviceid":"2","status":"1","token":"NO-TOKEN"})
-			#	if x.status_code:
-			#		send_light()
-			#	else:
-			#		print("failed to alert api of status: " + x.status_code)
-			#		fail_light()
-			#	api_timer.reset()
+		if api_timer.getElapsedTime() > 10:
+			kunapi.status(1)
+			api_timer.reset()
 
+		try:
 			csock, caddr = listen.s.accept()
 			csock.settimeout(.1)
 			print("/ ACCEPTED SOCKET")
@@ -136,7 +132,7 @@ try:
 				print("\ CLOSING SOCKET")
 				csock.close()
 		except socket.timeout:
-			print("no new client")
+			continue
 except KeyboardInterrupt:
 	shutdown()
 	exit()
