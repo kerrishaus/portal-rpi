@@ -61,7 +61,7 @@ light_timer = timer.Timer()
 try:
 	running = True
 	while running: # this is the socket accept loop
-		if api_timer.getElapsedTime() > 10:
+		if api_timer.getElapsedTime() > config.api_status_interval:
 			kunapi.status(1)
 			api_timer.reset()
 
