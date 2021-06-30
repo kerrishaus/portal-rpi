@@ -67,7 +67,7 @@ try: # this is the socket accept loop
 	#		fail_light()
 	#	api_timer.reset()
 
-	csock, caddr = listen.accept()
+	csock, caddr = listen.s.accept()
 	csock.settimeout(.1)
 	print("/ ACCEPTED SOCKET")
 	try: # this is the client communication loop
