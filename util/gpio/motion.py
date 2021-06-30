@@ -29,7 +29,7 @@ def update():
             # if the display is not powered on
             if str(output) != "b'display_power=1\\n'":
                 print("powering on display")
-                subprocess.run('vcgencmd display_power 1', shell=True, capture_output=True) # power it on
+                subprocess.run('vcgencmd display_power 1', shell=True) # power it on
             else: # don't do anything, it's already on
                 print("display is already on (" + str(output) + ")")
             kunapi.status(3)
