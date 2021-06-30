@@ -57,82 +57,88 @@ def send_message(message):
 
 api_timer = timer.Timer()
 
-try: # this is the socket accept loop
-	#if api_timer.getElapsedTime() > 1:
-	#	x = post_api("status", {"deviceid":"2","status":"1","token":"NO-TOKEN"})
-	#	if x.status_code:
-	#		send_light()
-	#	else:
-	#		print("failed to alert api of status: " + x.status_code)
-	#		fail_light()
-	#	api_timer.reset()
+try:
+	running = True
+	while running: # this is the socket accept loop
+		try:
+			#if api_timer.getElapsedTime() > 1:
+			#	x = post_api("status", {"deviceid":"2","status":"1","token":"NO-TOKEN"})
+			#	if x.status_code:
+			#		send_light()
+			#	else:
+			#		print("failed to alert api of status: " + x.status_code)
+			#		fail_light()
+			#	api_timer.reset()
 
-	csock, caddr = listen.s.accept()
-	csock.settimeout(.1)
-	print("/ ACCEPTED SOCKET")
-	try: # this is the client communication loop
-		while True:
-			data = csock.recv(1024)
-			if data:
-				lights.recv_light()
-
-				data = data.decode()
-				print("> " + data)
-				if data == "SHUTDOWN":
-					print("shutting down")
-					if send_message("SHUTTING_DOWN"):
-						os.system("poweroff")
-
-				elif data == "REBOOT":
-					if send_message("REBOOTING"):
-						subprocess.Popen(['sudo', 'shutdown','-r','now'])
-
-				elif data == "STOP":
-					send_message("STOPPING")
-					shutdown()
-					break
-
-				elif data == "TELL_HIM_HES_UGLY":
-					print("You can't even do that righ!")
-					send_message("YOU'RE CHUBBY")
-
-				elif data == "DISCONNECT":
-					if send_message("BYE_BYE"):
-						csock.close()
-						break
-
-				elif data == "SET_NAME":
-					send_message("OKAY_GIVE_NAME")
-
+			csock, caddr = listen.s.accept()
+			csock.settimeout(.1)
+			print("/ ACCEPTED SOCKET")
+			try: # this is the client communication loop
+				while True:
 					data = csock.recv(1024)
 					if data:
-						new_name = data.decode()
-						config.updateConfig("DEFAULT", "MyName", new_name)
-						config.my_name = new_name
-						print("my new name is " + config.my_name)
-						send_message("NAME_SET")
-					else:
-						print("NO name given")
-						send_message("FAIL_INVALID_DATA")
+						lights.recv_light()
 
-				else:
-					if data == "GIVE_NAME":
-						message = config.my_name
-					elif data == "PLATFORM_INFO":
-						message = os.name + " " + platform.system() + " " + platform.release()
-					else:
-						message = "UNKNOWN_COMMAND"
+						data = data.decode()
+						print("> " + data)
+						if data == "SHUTDOWN":
+							print("shutting down")
+							if send_message("SHUTTING_DOWN"):
+								os.system("poweroff")
 
-					send_message(message)
-			else:
-				print("Socket connected, but no data was received.")
-				lights.fail_light()
-	except socket.timeout:
-		print("socket timeout")
-	finally:
-		print("\ CLOSING SOCKET")
-		csock.close()
-except socket.timeout:
-	print("no new client")
+						elif data == "REBOOT":
+							if send_message("REBOOTING"):
+								subprocess.Popen(['sudo', 'shutdown','-r','now'])
+
+						elif data == "STOP":
+							send_message("STOPPING")
+							shutdown()
+							break
+
+						elif data == "TELL_HIM_HES_UGLY":
+							print("You can't even do that righ!")
+							send_message("YOU'RE CHUBBY")
+
+						elif data == "DISCONNECT":
+							if send_message("BYE_BYE"):
+								csock.close()
+								break
+
+						elif data == "SET_NAME":
+							send_message("OKAY_GIVE_NAME")
+
+							data = csock.recv(1024)
+							if data:
+								new_name = data.decode()
+								config.updateConfig("DEFAULT", "MyName", new_name)
+								config.my_name = new_name
+								print("my new name is " + config.my_name)
+								send_message("NAME_SET")
+							else:
+								print("NO name given")
+								send_message("FAIL_INVALID_DATA")
+
+						else:
+							if data == "GIVE_NAME":
+								message = config.my_name
+							elif data == "PLATFORM_INFO":
+								message = os.name + " " + platform.system() + " " + platform.release()
+							else:
+								message = "UNKNOWN_COMMAND"
+
+							send_message(message)
+					else:
+						print("Data received, but data was invalid.")
+						lights.fail_light()
+			except socket.timeout:
+				print("socket timeout")
+			finally:
+				print("\ CLOSING SOCKET")
+				csock.close()
+		except socket.timeout:
+			print("no new client")
 except KeyboardInterrupt:
 	shutdown()
+	exit()
+
+shutdown()
