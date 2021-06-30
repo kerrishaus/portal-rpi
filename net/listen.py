@@ -1,12 +1,13 @@
 import socket
 import selectors
 
+from util import config
 from util.gpio import lights
 
 s = socket.socket()
 
 def setup():
-	s.bind(("0.0.0.0", 27000))
+	s.bind(("0.0.0.0", config.my_port))
 
 	if s.listen():
 		lights.send_light()
