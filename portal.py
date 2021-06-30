@@ -114,6 +114,20 @@ try:
 								print("NO name given")
 								send_message("FAIL_INVALID_DATA")
 
+						elif data == "SET_API_INTERVAL":
+							send_message("OKAY_GIVE_INTERVAL")
+
+							data = csock.recv(1024)
+							if data:
+								new_interval = data.decode()
+								config.updateConfig("KUNINDUSTRIES_API", "StatusInterval", new_interval)
+								config.api_status_interval = new_interval
+								print("Status interval set to " + config.api_status_interval)
+								send_message("INTERVAL_SET")
+							else:
+								print("Data is invalid.")
+								send_message("FAIL_INVALID_DATA")
+
 						else:
 							if data == "GIVE_NAME":
 								message = config.my_name
