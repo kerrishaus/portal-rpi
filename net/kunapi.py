@@ -1,13 +1,26 @@
 import requests
 
+from util import config
 from util.gpio import lights
 
 def post(endpoint, payload):
 	r = requests.post("https://api.kunindustries.com/portal/devices/" + endpoint + ".php", data = payload)
-	lights.send_light()
+	if r.status_code:
+		lights.send_light()
+	else:
+		lights.fail_light()
 	return r
 
 #def get(endpoint, payload):
 #	r = requests.get("https://api.kunindustries.com/portal/devices/" + endpoint + ".php", data = payload)
 #	lights.send_light()
 #	return r
+
+def status(status):
+	payload = {
+		"deviceid": config.api_device_id,
+		"status": status,
+		"token": "NO-TOKEN"
+	}
+
+	return post("status", payload)

@@ -22,6 +22,7 @@ def update():
 	motionOn = False
 	while True:
 		motionDetected = GPIO.input(motion.MOTION_SENSOR_PIN)
+		
 		if motionDetected:
 			if not motionOn:
 				motionOn = True
@@ -29,10 +30,12 @@ def update():
 				lights.send_light()
 				noMotionTimer.reset()
 		else:
-			motionOn = False
-			motionTimer.reset()
-			if noMotionTimer.getElapsedTime() > 120:
-				run('vcgencmd display_power 0', shell=True)
-				print("no motion for 10 seconds")
+			if motionOn:
+				motionOn = False
+				motionTimer.reset()
+				if noMotionTimer.getElapsedTime() > 120:
+					run('vcgencmd display_power 0', shell=True)
+					print("no motion for 10 seconds")
+
 		time.sleep(3)
 	return
