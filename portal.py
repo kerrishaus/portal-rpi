@@ -36,6 +36,7 @@ print("Portal Client is ready.")
 
 if config.my_purpose == "Motion":
 	from util.gpio import motion
+	motion.setup()
 
 def shutdown():
 	if not kunapi.status(0):
@@ -64,6 +65,9 @@ try:
 		if api_timer.getElapsedTime() > config.api_status_interval:
 			kunapi.status(1)
 			api_timer.reset()
+
+		if config.my_purpose == "Motion":
+			motion.update()
 
 		try:
 			csock, caddr = listen.s.accept()
