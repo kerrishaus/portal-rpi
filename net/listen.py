@@ -1,6 +1,8 @@
 import socket
 import selectors
 
+from util.gpio import lights
+
 s = socket.socket()
 
 def setup():
