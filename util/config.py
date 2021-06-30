@@ -8,15 +8,8 @@ def write_file():
 	config.write(open(configLocation, 'w'))
 
 if not os.path.exists(configLocation):
-	config['DEFAULT']['MyName'] = "Raspberry Pi"
-	config['DEFAULT']['MyAddr'] = "0.0.0.0"
-	config['DEFAULT']['MyPort'] = "27000"
-	config['DEFAULT']['MyPurpose'] = "Develop"
-
-	config['KUNINDUSTRIES_API']['Token'] = "NO-TOKEN"
-	config['KUNINDUSTRIES_API']['StatusInterval'] = 60
-	config['KUNINDUSTRIES_API']['AutoUpdateAddressAndPort'] = True
-	config['KUNINDUSTRIES_API']['DeviceID'] = 0
+	config['DEFAULT'] = { 'MyName': "Raspberry Pi", 'MyAddr': "0.0.0.0", 'MyPort': "27000", 'MyPurpose': "Develop" }
+	config['KUNINDUSTRIES_API'] = { 'Token': "NO-TOKEN", 'StatusInterval': 60, 'AutoUpdateAddressAndPort': True, 'DeviceID': 0 }
 
 	write_file()
 else:
