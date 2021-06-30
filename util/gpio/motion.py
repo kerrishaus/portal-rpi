@@ -7,7 +7,7 @@ from util import timer
 from util import config
 from net import kunapi
 
-MOTION_SENSOR_PIN = 23
+MOTION_SENSOR_PIN = 14
 
 def setup():
     GPIO.setup(MOTION_SENSOR_PIN, GPIO.IN)
