@@ -20,6 +20,7 @@ print("Starting Portal Client " + str(VERSION))
 #config.load_config()
 
 print("My name is " + config.my_name + ".")
+print("I am device " + config.api_device_id)
 
 gpio.setup()
 lights.setup()
