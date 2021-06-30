@@ -7,7 +7,7 @@ config.read(configLocation)
 
 my_name = config['DEFAULT']['MyName']
 my_addr = config['DEFAULT']['MyAddr']
-my_port = config['DEFAULT']['MyPort']
+my_port = int(config['DEFAULT']['MyPort'])
 my_purpose = config['DEFAULT']['MyPurpose']
 
 api_token = config['KUNINDUSTRIES_API']['Token']
