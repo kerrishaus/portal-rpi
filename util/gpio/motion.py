@@ -14,7 +14,7 @@ def setup():
 
 motion = False
 
-def update():
+def update(motion):
     if GPIO.input(MOTION_SENSOR_PIN):
         if not motion:
             motion = True

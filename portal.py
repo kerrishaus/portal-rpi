@@ -67,7 +67,7 @@ try:
 			api_timer.reset()
 
 		if config.my_purpose == "Motion":
-			motion.update()
+			motion.update(motion.motion)
 
 		try:
 			csock, caddr = listen.s.accept()
