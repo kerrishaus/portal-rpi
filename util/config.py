@@ -17,6 +17,8 @@ if not os.path.exists(configLocation):
 	config['KUNINDUSTRIES_API']['StatusInterval'] = 60
 	config['KUNINDUSTRIES_API']['AutoUpdateAddressAndPort'] = True
 	config['KUNINDUSTRIES_API']['DeviceID'] = 0
+
+	write_file()
 else:
 	config.read(configLocation)
 
