@@ -24,7 +24,4 @@ def update(motion):
             kunapi.status(4)
             # dont know if i want to do this just yet
             #subprocess.run('vcgencmd display_power 0', shell=True)
-
-    time.sleep(3)
     return
-    
