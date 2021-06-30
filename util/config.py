@@ -1,6 +1,6 @@
 import configparser
 
-configLocation = "/home/pi/python/portal-rpi/config.ini"
+configLocation = "/home/pi/portal-rpi/config.ini"
 
 config = configparser.ConfigParser()
 config.read(configLocation)
