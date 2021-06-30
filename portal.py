@@ -45,7 +45,7 @@ def shutdown():
 	lights.fail_light(3)
 		
 	gpio.cleanup()
-	listen.close()
+	listen.s.close()
 
 def send_message(message):
 	sent = csock.send(message.encode())
