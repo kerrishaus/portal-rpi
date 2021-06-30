@@ -2,6 +2,7 @@ import time
 import os
 import platform
 import subprocess
+import socket
 
 from util import gpio
 from util.gpio import lights
@@ -126,12 +127,12 @@ try: # this is the socket accept loop
 			else:
 				print("Socket connected, but no data was received.")
 				lights.fail_light()
-	except listen.timeout:
+	except socket.timeout:
 		print("socket timeout")
 	finally:
 		print("\ CLOSING SOCKET")
 		csock.close()
-except listen.timeout:
+except socket.timeout:
 	print("no new client")
 except KeyboardInterrupt:
 	shutdown()
