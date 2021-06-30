@@ -20,9 +20,11 @@ def update():
     if GPIO.input(MOTION_SENSOR_PIN):
         if not motion:
             motion = True
+            print("motion detected")
             result = subprocess.run('vcgencmd display_power -1', shell=True, capture_output=True)
             output = result.stdout
             if str(output) == "display_power=0":
+                print("powering on display")
                 subprocess.run('vcgencmd display_power 1', shell=True, capture_output=True)
             else:
                 print("display is already on")
@@ -30,6 +32,7 @@ def update():
     else:
         if motion:
             motion = False
+            print("motion no longer detected")
             kunapi.status(4)
             # dont know if i want to do this just yet
             #subprocess.run('vcgencmd display_power 0', shell=True)
