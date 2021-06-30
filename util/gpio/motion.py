@@ -21,12 +21,16 @@ def update():
         if not motion:
             motion = True
             print("motion detected")
+
+            # ask if the display is already powered on
             result = subprocess.run('vcgencmd display_power -1', shell=True, capture_output=True)
             output = result.stdout
-            if str(output) == "display_power=0":
+
+            # if the display is not powered on
+            if str(output) != "b'display_power=1\\n'":
                 print("powering on display")
-                subprocess.run('vcgencmd display_power 1', shell=True, capture_output=True)
-            else:
+                subprocess.run('vcgencmd display_power 1', shell=True, capture_output=True) # power it on
+            else: # don't do anything, it's already on
                 print("display is already on (" + str(output) + ")")
             kunapi.status(3)
     else:
