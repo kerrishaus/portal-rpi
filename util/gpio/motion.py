@@ -48,6 +48,8 @@ def update():
             if str(output) != "b'display_power=1\\n'":
                 print("powering on display")
                 display_power_on()
+                # wake up screen if it's blanked
+                subprocess.run('export DISPLAY=:0 && xset s reset', shell=True)
             else: # don't do anything, display is already on
                 print("display is already on (" + output + ")")
 
