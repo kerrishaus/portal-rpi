@@ -14,6 +14,12 @@ motion = False
 def setup():
     GPIO.setup(MOTION_SENSOR_PIN, GPIO.IN)
 
+def display_power_on():
+    return subprocess.run('vcgencmd display_power 1', shell=True)
+
+def display_power_off():
+    return subprocess.run('vcgencmd display_power 0', shell=True)
+
 def update():
     global motion
 
@@ -24,28 +30,27 @@ def update():
 
             # ask if the display is already powered on
             result = subprocess.run('vcgencmd display_power -1', shell=True, capture_output=True)
-            output = result.stdout
+            output = str(result.stdout)
 
             # if the display is not powered on
             if str(output) != "b'display_power=1\\n'":
                 print("powering on display")
-                subprocess.run('vcgencmd display_power 1', shell=True) # power it on
-            else: # don't do anything, it's already on
-                print("display is already on (" + str(output) + ")")
+                display_power_on()
+            else: # don't do anything, display is already on
+                print("display is already on (" + output + ")")
+
             kunapi.status(3)
     else:
         if motion:
             motion = False
             print("motion no longer detected")
             kunapi.status(4)
-            # dont know if i want to do this just yet
-            #subprocess.run('vcgencmd display_power 0', shell=True)
         elif not motion:
             # get idle time from xserver in ms
             result = subprocess.run('export DISPLAY=:0 && sudo -u pi xprintidle', shell=True, capture_output=True)
-            output = result.stdout
-            output = str(output)
-            output = output[2:len(output) - 2]
-
-            print(output)
+            output = str(result.stdout)
+            output = output[2:len(output) - 3]
+            idletime = int(output)
+            if idletime > 60000:
+                display_power_off()
     return
