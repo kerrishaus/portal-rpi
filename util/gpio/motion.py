@@ -10,7 +10,7 @@ from net import kunapi
 MOTION_SENSOR_PIN = 14
 
 #in seconds
-MAX_IDLE_TIME = 60
+MAX_IDLE_TIME = 360
 
 motion = False
 
