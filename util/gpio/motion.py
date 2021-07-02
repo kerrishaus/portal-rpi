@@ -45,7 +45,7 @@ def update():
             result = subprocess.run('export DISPLAY=:0 && sudo -u pi xprintidle', shell=True, capture_output=True)
             output = result.stdout
             output = str(output)
-            output = output[2:-1]
+            output = output[2:len(output) - 2]
 
             print(output)
     return
