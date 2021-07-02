@@ -9,6 +9,9 @@ from net import kunapi
 
 MOTION_SENSOR_PIN = 14
 
+#in seconds
+MAX_IDLE_TIME = 60
+
 motion = False
 
 def setup():
@@ -19,6 +22,15 @@ def display_power_on():
 
 def display_power_off():
     return subprocess.run('vcgencmd display_power 0', shell=True)
+
+def is_display_powered():
+    # ask if the display is already powered on
+    result = subprocess.run('vcgencmd display_power -1', shell=True, capture_output=True)
+    output = str(result.stdout)
+    if str(output) != "b'display_power=1\\n'":
+        return True
+    else:
+        return False
 
 def update():
     global motion
@@ -45,12 +57,12 @@ def update():
             motion = False
             print("motion no longer detected")
             kunapi.status(4)
-        elif not motion:
+        elif not motion and not is_display_powered():
             # get idle time from xserver in ms
             result = subprocess.run('export DISPLAY=:0 && sudo -u pi xprintidle', shell=True, capture_output=True)
             output = str(result.stdout)
             output = output[2:len(output) - 3]
             idletime = int(output)
-            if idletime > 60000:
+            if idletime > (MAX_IDLE_TIME * 1000):
                 display_power_off()
     return
