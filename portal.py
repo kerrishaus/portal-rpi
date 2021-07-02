@@ -40,7 +40,7 @@ if config.my_purpose == "Motion":
 
 def shutdown():
 	if not kunapi.status(0):
-		print("failed to notify api of change in status")
+		print("failed to notify api of shutdown")
 		lights.fail_light()
 		
 	lights.fail_light(3)
