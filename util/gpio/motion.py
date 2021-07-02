@@ -40,4 +40,10 @@ def update():
             kunapi.status(4)
             # dont know if i want to do this just yet
             #subprocess.run('vcgencmd display_power 0', shell=True)
+        elif not motion:
+            # get idle time from xserver in ms
+            result = subprocess.run('export DISPLAY=:0 && sudo -u pi xprintidle', shell=True, capture_output=True)
+            output = result.stdout
+
+            print(str(output))
     return
