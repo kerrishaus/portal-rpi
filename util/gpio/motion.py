@@ -44,6 +44,8 @@ def update():
             # get idle time from xserver in ms
             result = subprocess.run('export DISPLAY=:0 && sudo -u pi xprintidle', shell=True, capture_output=True)
             output = result.stdout
+            output = str(output)
+            output = output[2:-1]
 
-            print(str(output)[0:3])
+            print(output)
     return
