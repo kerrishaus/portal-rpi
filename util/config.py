@@ -22,7 +22,7 @@ my_port = int(config['DEFAULT']['MyPort'])
 my_purpose = config['DEFAULT']['MyPurpose']
 
 # this value is in seconds
-screen_idle_time = config['SCREEN']['IdleTime']
+screen_idle_time = int(config['SCREEN']['IdleTime'])
 
 api_token = config['KUNINDUSTRIES_API']['Token']
 api_status_interval = float(config['KUNINDUSTRIES_API']['StatusInterval'])
