@@ -33,12 +33,6 @@ def is_display_powered():
     else:
         return False
 
-def display_blank():
-    return subprocess.run('export DISPLAY=:0 && xset s activate', shell=True)
-
-def display_unblank():
-    return subprocess.run('export DISPLAY=:0 && xset s reset', shell=True)
-
 def get_idle_time():
     result = subprocess.run('export DISPLAY=:0 && sudo -u pi xprintidle', shell=True, capture_output=True)
     output = str(result.stdout)
@@ -54,7 +48,9 @@ def update():
             motion = True
             print("motion detected")
             kunapi.status(3)
-            display_unblank()
+
+            if is_display_powered():
+                display_power_on()
     else:
         if motion:
             motion = False
@@ -62,5 +58,5 @@ def update():
             kunapi.status(4)
         elif not motion and not is_display_powered():
             if get_idle_time() > (MAX_IDLE_TIME * 1000):
-                display_blank()
+                display_power_off()
     return
