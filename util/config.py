@@ -9,6 +9,7 @@ def write_file():
 
 if not os.path.exists(configLocation):
 	config['DEFAULT'] = { 'MyName': "Raspberry Pi", 'MyAddr': "0.0.0.0", 'MyPort': "27000", 'MyPurpose': "Develop" }
+	config['SCREEN'] = { 'IdleTime': "15" }
 	config['KUNINDUSTRIES_API'] = { 'Token': "NO-TOKEN", 'StatusInterval': 60, 'AutoUpdateAddressAndPort': True, 'DeviceID': 0 }
 
 	write_file()
@@ -19,6 +20,9 @@ my_name = config['DEFAULT']['MyName']
 my_addr = config['DEFAULT']['MyAddr']
 my_port = int(config['DEFAULT']['MyPort'])
 my_purpose = config['DEFAULT']['MyPurpose']
+
+# this value is in seconds
+screen_idle_time = config['SCREEN']['IdleTime']
 
 api_token = config['KUNINDUSTRIES_API']['Token']
 api_status_interval = float(config['KUNINDUSTRIES_API']['StatusInterval'])

@@ -9,10 +9,6 @@ from net import kunapi
 
 MOTION_SENSOR_PIN = 14
 
-#in seconds
-#MAX_IDLE_TIME = 360
-MAX_IDLE_TIME = 15
-
 motion = False
 
 def setup():
@@ -57,6 +53,6 @@ def update():
             print("motion no longer detected")
             kunapi.status(4)
         elif not motion and not is_display_powered():
-            if get_idle_time() > (MAX_IDLE_TIME * 1000):
+            if get_idle_time() > (config.screen_idle_time * 1000):
                 display_power_off()
     return
