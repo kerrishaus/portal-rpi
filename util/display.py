@@ -16,7 +16,7 @@ def is_display_powered():
         return False
 
 def get_idle_time():
-    result = subprocess.run('export DISPLAY=:0 && sudo -u pi xprintidle', shell=True, capture_output=True)
+    result = subprocess.run('export DISPLAY=:0 && xprintidle', shell=True, capture_output=True)
     output = str(result.stdout)
     output = output[2:len(output) - 3]
     idletime = int(output)
