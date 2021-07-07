@@ -67,10 +67,10 @@ try:
 			kunapi.status(1)
 			api_timer.reset()
 
-		if display.is_display_powered():
-			if display.get_idle_time() > (config.screen_idle_time * 1000):
-				display.display_power_off()
-				subprocess.run('export DISPLAY=:0 && xset s reset', shell=True)
+		#if display.is_display_powered():
+		#	if display.get_idle_time() > (config.screen_idle_time * 1000):
+		#		display.display_power_off()
+		#		subprocess.run('export DISPLAY=:0 && xset s reset', shell=True)
 
 		if config.my_purpose == "Motion":
 			motion.update()
