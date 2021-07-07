@@ -8,6 +8,7 @@ from util import gpio
 from util.gpio import lights
 from util import timer
 from util import config
+from util import display
 
 from net import listen
 from net import kunapi
@@ -65,6 +66,10 @@ try:
 		if api_timer.getElapsedTime() > config.api_status_interval:
 			kunapi.status(1)
 			api_timer.reset()
+
+		if display.is_display_powered():
+			if display.get_idle_time() > (config.screen_idle_time * 1000):
+				display.display_power_off()
 
 		if config.my_purpose == "Motion":
 			motion.update()
