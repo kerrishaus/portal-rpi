@@ -24,10 +24,10 @@ my_purpose = config['DEFAULT']['MyPurpose']
 # this value is in seconds
 screen_idle_time = int(config['SCREEN']['IdleTime'])
 
-api_token = config['KERRIRSHAUS_API']['Token']
-api_status_interval = float(config['KERRIRSHAUS_API']['StatusInterval'])
-api_auto_update_addr_and_port = config['KERRIRSHAUS_API']['AutoUpdateAddressAndPort']
-api_device_id = config['KERRIRSHAUS_API']['DeviceID']
+api_token = config['KERRISHAUS_API']['Token']
+api_status_interval = float(config['KERRISHAUS_API']['StatusInterval'])
+api_auto_update_addr_and_port = config['KERRISHAUS_API']['AutoUpdateAddressAndPort']
+api_device_id = config['KERRISHAUS_API']['DeviceID']
 
 def updateConfig(section, key, value):
 	config[section][key] = value
