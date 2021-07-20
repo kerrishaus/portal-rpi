@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 from util import timer
 from util import config
 from util import display
-from net import kunapi
+from net import kerrishausapi
 
 MOTION_SENSOR_PIN = 14
 
@@ -20,7 +20,7 @@ def update():
         if not motion:
             motion = True
             print("motion detected")
-            kunapi.status(3)
+            kerrishausapi.status(3)
 
             if not display.is_display_powered():
                 display.display_power_on()
@@ -28,7 +28,7 @@ def update():
         if motion:
             motion = False
             print("motion no longer detected")
-            kunapi.status(4)
+            kerrishausapi.status(4)
         elif not motion and display.is_display_powered():
             if display.get_idle_time() > (config.screen_idle_time * 1000):
                 display.display_power_off()

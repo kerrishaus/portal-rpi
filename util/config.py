@@ -10,7 +10,7 @@ def write_file():
 if not os.path.exists(configLocation):
 	config['DEFAULT'] = { 'MyName': "Raspberry Pi", 'MyAddr': "0.0.0.0", 'MyPort': "27000", 'MyPurpose': "Develop" }
 	config['SCREEN'] = { 'IdleTime': "15" }
-	config['KUNINDUSTRIES_API'] = { 'Token': "NO-TOKEN", 'StatusInterval': 60, 'AutoUpdateAddressAndPort': True, 'DeviceID': 0 }
+	config['KERRIRSHAUS_API'] = { 'Token': "NO-TOKEN", 'StatusInterval': 60, 'AutoUpdateAddressAndPort': True, 'DeviceID': 0 }
 
 	write_file()
 else:
@@ -24,10 +24,10 @@ my_purpose = config['DEFAULT']['MyPurpose']
 # this value is in seconds
 screen_idle_time = int(config['SCREEN']['IdleTime'])
 
-api_token = config['KUNINDUSTRIES_API']['Token']
-api_status_interval = float(config['KUNINDUSTRIES_API']['StatusInterval'])
-api_auto_update_addr_and_port = config['KUNINDUSTRIES_API']['AutoUpdateAddressAndPort']
-api_device_id = config['KUNINDUSTRIES_API']['DeviceID']
+api_token = config['KERRIRSHAUS_API']['Token']
+api_status_interval = float(config['KERRIRSHAUS_API']['StatusInterval'])
+api_auto_update_addr_and_port = config['KERRIRSHAUS_API']['AutoUpdateAddressAndPort']
+api_device_id = config['KERRIRSHAUS_API']['DeviceID']
 
 def updateConfig(section, key, value):
 	config[section][key] = value

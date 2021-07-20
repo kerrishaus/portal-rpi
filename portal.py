@@ -11,7 +11,7 @@ from util import config
 from util import display
 
 from net import listen
-from net import kunapi
+from net import kerrishausapi
 
 VERSION = 1
 
@@ -28,7 +28,7 @@ gpio.setup()
 lights.setup()
 listen.setup()
 
-if not kunapi.status(1):
+if not kerrishausapi.status(1):
 	print("failed to alert api of status")
 
 lights.send_light()
@@ -40,7 +40,7 @@ if config.my_purpose == "Motion":
 	motion.setup()
 
 def shutdown():
-	if not kunapi.status(0):
+	if not kerrishausapi.status(0):
 		print("failed to notify api of shutdown")
 		lights.fail_light()
 		
@@ -64,7 +64,7 @@ try:
 	running = True
 	while running: # this is the socket accept loop
 		if api_timer.getElapsedTime() > config.api_status_interval:
-			kunapi.status(1)
+			kerrishausapi.status(1)
 			api_timer.reset()
 
 		#if display.is_display_powered():

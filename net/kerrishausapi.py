@@ -4,7 +4,7 @@ from util import config
 from util.gpio import lights
 
 def post(endpoint, payload):
-	r = requests.post("https://api.kunindustries.com/portal/devices/" + endpoint + ".php", data = payload)
+	r = requests.post("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
 	if r.status_code:
 		lights.send_light()
 	else:
@@ -12,7 +12,7 @@ def post(endpoint, payload):
 	return r
 
 #def get(endpoint, payload):
-#	r = requests.get("https://api.kunindustries.com/portal/devices/" + endpoint + ".php", data = payload)
+#	r = requests.get("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
 #	lights.send_light()
 #	return r
 
