@@ -13,6 +13,12 @@ from util import display
 from net import listen
 from net import kerrishausapi
 
+from commands import CommandHandler
+from commands import RebootCommand
+
+cman = CommandHandler()
+cman.RegisterCommand(RebootCommand, "REBOOT")
+
 VERSION = 1
 
 print("Starting Portal Client " + str(VERSION))
