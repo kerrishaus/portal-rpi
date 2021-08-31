@@ -16,8 +16,8 @@ from net import kerrishausapi
 from commands import CommandHandler
 from commands import RebootCommand
 
-cman = CommandHandler()
-cman.RegisterCommand(RebootCommand, "REBOOT")
+#cman = CommandHandler()
+#cman.RegisterCommand(RebootCommand, "REBOOT")
 
 VERSION = 1
 
