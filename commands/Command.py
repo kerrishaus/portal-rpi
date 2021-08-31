@@ -1,3 +1,3 @@
-class Command:
-	def OnExecute():
-		return
+#class Command:
+#	def OnExecute():
+#		return
