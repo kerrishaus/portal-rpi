@@ -93,6 +93,9 @@ try:
 
 						data = data.decode()
 						print("> " + data)
+
+						cman.runCommand(data)
+
 						if data == "SHUTDOWN":
 							print("shutting down")
 							if send_message("SHUTTING_DOWN"):
