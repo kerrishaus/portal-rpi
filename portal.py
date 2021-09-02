@@ -15,9 +15,11 @@ from net import kerrishausapi
 
 from commands import CommandHandler
 from commands import RebootCommand
+from commands import PingCommand
 
 cman = CommandHandler.CommandHandler()
 cman.RegisterCommand(RebootCommand.RebootCommand(), "REBOOT")
+cman.RegisterCommand(PingCommand.PingCommand(), "TELL_HIM_HES_UGLY")
 
 VERSION = 1
 
