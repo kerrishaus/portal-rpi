@@ -1,8 +1,6 @@
-#from commands import Command
-#
-#import os
-#
-#class RebootCommand(commands.Command):
-#	def OnExecute():
-#		print("Shutting down...")
-#		os.system("poweroff")
+import os
+
+class RebootCommand():
+	def OnExecute(self):
+		print("Shutting down...")
+		os.system("poweroff")
