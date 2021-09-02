@@ -9,7 +9,7 @@ def write_file():
 
 if not os.path.exists(configLocation):
 	config['DEFAULT'] = { 'MyName': "Raspberry Pi", 'MyAddr': "0.0.0.0", 'MyPort': "27000", 'MyPurpose': "Develop" }
-	config['SCREEN'] = { 'IdleTime': "15" }
+	config['SCREEN'] = { 'IdleTime': "360" }
 	config['KERRISHAUS_API'] = { 'Token': "NO-TOKEN", 'StatusInterval': 60, 'AutoUpdateAddressAndPort': True, 'DeviceID': 0 }
 
 	write_file()
