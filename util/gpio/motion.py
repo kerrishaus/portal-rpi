@@ -1,6 +1,8 @@
 
 import RPi.GPIO as GPIO
 
+import subprocess
+
 from util import timer
 from util import config
 from util import display
@@ -24,6 +26,12 @@ def update():
 
             if not display.is_display_powered():
                 display.display_power_on()
+
+                result = subprocess.run('export DISPLAY=:0 && xset s reset', shell=True, capture_output=True)
+                output = str(result.stdout)
+                f = open("log.txt", "a")
+                f.write(output)
+                f.close()
     else:
         if motion:
             motion = False
