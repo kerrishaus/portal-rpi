@@ -48,6 +48,8 @@ if config.my_purpose == "Motion":
 	motion.setup()
 
 def shutdown():
+	print("Portal service is stopping...")
+
 	if not kerrishausapi.status(0):
 		print("failed to notify api of shutdown")
 		lights.fail_light()
@@ -56,6 +58,8 @@ def shutdown():
 		
 	gpio.cleanup()
 	listen.s.close()
+
+	print("Have a good night.")
 
 def send_message(message):
 	sent = csock.send(message.encode())
@@ -169,6 +173,7 @@ try:
 		except socket.timeout:
 			continue
 except KeyboardInterrupt:
+	print("STOP")
 	shutdown()
 	exit()
 
