@@ -122,7 +122,7 @@ try:
 
 							data = csock.recv(1024)
 							if data:
-									new_name = data.decode()
+								new_name = data.decode()
 								config.updateConfig("DEFAULT", "MyName", new_name)
 								config.my_name = new_name
 								print("my new name is " + config.my_name)
