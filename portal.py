@@ -14,17 +14,19 @@ from net import listen
 from net import kerrishausapi
 
 from commands import CommandHandler
+from commands import ShutdownCommand
 from commands import RebootCommand
 from commands import PingCommand
 
 cman = CommandHandler.CommandHandler()
+cman.RegisterCommand(ShutdownCommand.ShutdownCommand(), "SHUTDOWN")
 cman.RegisterCommand(RebootCommand.RebootCommand(), "REBOOT")
 cman.RegisterCommand(PingCommand.PingCommand(), "TELL_HIM_HES_UGLY")
 
 if "Kiosk" in config.my_purpose:
 	from commands import ScreenOffCommand
 	from commands import ScreenOnCommand
-	
+
 	cman.RegisterCommand(ScreenOffCommand.ScreenOffCommand(), "SCREEN_OFF")
 	cman.RegisterCommand(ScreenOnCommand.ScreenOnCommand(), "SCREEN_ON")
 
@@ -109,21 +111,7 @@ try:
 
 						cman.runCommand(data)
 
-						if data == "SHUTDOWN":
-							print("shutting down")
-							if send_message("SHUTTING_DOWN"):
-								os.system("poweroff")
-
-						elif data == "REBOOT":
-							if send_message("REBOOTING"):
-								subprocess.Popen(['sudo', 'shutdown','-r','now'])
-
-						elif data == "STOP":
-							send_message("STOPPING")
-							shutdown()
-							break
-
-						elif data == "DISCONNECT":
+						if data == "DISCONNECT":
 							if send_message("BYE_BYE"):
 								csock.close()
 								break
@@ -156,15 +144,16 @@ try:
 								print("Data is invalid.")
 								send_message("FAIL_INVALID_DATA")
 
-						else:
-							if data == "GIVE_NAME":
-								message = config.my_name
-							elif data == "PLATFORM_INFO":
-								message = os.name + " " + platform.system() + " " + platform.release()
-							else:
-								message = "UNKNOWN_COMMAND"
+						elif data == "GET_PURPOSE":
+							send_message(config.my_purpose)
 
-							send_message(message)
+						elif data == "PLATFORM_INFO":
+							send_message(message = os.name + " " + platform.system() + " " + platform.release())
+
+						elif data == "GIVE_NAME":
+							send_message(config.my_name)
+						else:
+							send_message("UNKNOWN_COMMAND")
 					else:
 						print("Data received, but data was invalid.")
 						lights.fail_light()

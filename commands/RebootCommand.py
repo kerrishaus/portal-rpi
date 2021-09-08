@@ -2,5 +2,7 @@ import os
 
 class RebootCommand():
 	def OnExecute(self):
-		print("Shutting down...")
-		os.system("poweroff")
+		print("Rebooting...")
+		os.system("poweroff") # it will just boot again, because it's an rpi
+		
+		#subprocess.Popen(['sudo', 'shutdown','-r','now'])
