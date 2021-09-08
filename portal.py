@@ -121,7 +121,7 @@ try:
 
 							data = csock.recv(1024)
 							if data:
-								new_name = data.decode()
+									new_name = data.decode()
 								config.updateConfig("DEFAULT", "MyName", new_name)
 								config.my_name = new_name
 								print("my new name is " + config.my_name)
@@ -147,11 +147,37 @@ try:
 						elif data == "GIVE_PURPOSE":
 							send_message(config.my_purpose)
 
+						elif data == "SCREEN_STATUS":
+							send_message(display.is_display_powered())
+
 						elif data == "PLATFORM_INFO":
 							send_message(message = os.name + " " + platform.system() + " " + platform.release())
 
 						elif data == "GIVE_NAME":
 							send_message(config.my_name)
+
+						elif data == "GIVE_GENERAL":
+							if "Kiosk" in config.my_purpose:
+								screen = {
+									"powered": display.is_display_powered()
+								}
+							else:
+								screen = False
+
+							if "Motion" in config.my_purpose:
+								motion_stat = motion.motion
+							else:
+								motion_stat = False
+
+							payload = {
+								"deviceid": config.api_device_id,
+								"name": config.my_name,
+								"platform": os.name + " " + platform.system() + " " + platform.release(),
+								"purpose": config.my_purpose,
+								"screen": screen,
+								"motion": motion_stat,
+							}
+
 						else:
 							send_message("UNKNOWN_COMMAND")
 					else:
