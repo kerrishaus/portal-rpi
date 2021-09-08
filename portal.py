@@ -144,7 +144,7 @@ try:
 								print("Data is invalid.")
 								send_message("FAIL_INVALID_DATA")
 
-						elif data == "GET_PURPOSE":
+						elif data == "GIVE_PURPOSE":
 							send_message(config.my_purpose)
 
 						elif data == "PLATFORM_INFO":
