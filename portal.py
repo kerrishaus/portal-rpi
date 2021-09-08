@@ -53,7 +53,7 @@ lights.send_light()
 
 print("Portal Client is ready.")
 
-if config.my_purpose == "Motion":
+if "Motion" in config.my_purpose:
 	from util.gpio import motion
 	motion.setup()
 
@@ -94,7 +94,7 @@ try:
 		#		display.display_power_off()
 		#		subprocess.run('export DISPLAY=:0 && xset s reset', shell=True)
 
-		if config.my_purpose == "Motion":
+		if "Motion" in config.my_purpose:
 			motion.update()
 
 		try:
