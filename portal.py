@@ -3,6 +3,7 @@ import os
 import platform
 import subprocess
 import socket
+import json
 
 from util import gpio
 from util.gpio import lights
@@ -177,6 +178,10 @@ try:
 								"screen": screen,
 								"motion": motion_stat,
 							}
+
+							payload = json.dumps(payload)
+
+							send_message(payload)
 
 						else:
 							send_message("UNKNOWN_COMMAND")
