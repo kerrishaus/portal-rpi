@@ -16,16 +16,18 @@ def post(endpoint, payload):
 #	lights.send_light()
 #	return r
 
-STATUS_OFFLINE   = 0
-STATUS_ONLINE    = 1
-STATUS_MOTION    = 3
-STATUS_NO_MOTION = 4
+STATUS_OFFLINE   		    = 0
+STATUS_ONLINE    		    = 1
+STATUS_ONLINE_SCREEN_ON     = 2
+STATUS_ONLINE_SCREEN_OFF    = 3
+STATUS_MOTION_DETECTED      = 4
+STATUS_STOP_MOTION_DETECTED = 5
 
 def status(status):
 	payload = {
 		"deviceid": config.api_device_id,
 		"status": status,
-		"token": "NO-TOKEN"
+		"token": config.api_token
 	}
 
 	return post("status", payload)

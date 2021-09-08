@@ -30,7 +30,7 @@ api_status_interval = float(config['KERRISHAUS_API']['StatusInterval'])
 api_auto_update_addr_and_port = config['KERRISHAUS_API']['AutoUpdateAddressAndPort']
 api_device_id = config['KERRISHAUS_API']['DeviceID']
 
-debug_light_duration = config['DEBUG']['LightDuration']
+debug_light_duration = float(config['DEBUG']['LightDuration'])
 
 def updateConfig(section, key, value):
 	config[section][key] = value
