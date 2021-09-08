@@ -21,9 +21,16 @@ cman = CommandHandler.CommandHandler()
 cman.RegisterCommand(RebootCommand.RebootCommand(), "REBOOT")
 cman.RegisterCommand(PingCommand.PingCommand(), "TELL_HIM_HES_UGLY")
 
+if "Kiosk" in config.my_purpose:
+	from commands import ScreenOffCommand
+	from commands import ScreenOnCommand
+	
+	cman.RegisterCommand(ScreenOffCommand.ScreenOffCommand(), "SCREEN_OFF")
+	cman.RegisterCommand(ScreenOnCommand.ScreenOnCommand(), "SCREEN_ON")
+
 VERSION = 1
 
-print("Starting Portal Client " + str(VERSION))
+print("Starting Portal client " + str(VERSION))
 
 # config is currently autoloaded
 #config.load_config()
@@ -115,10 +122,6 @@ try:
 							send_message("STOPPING")
 							shutdown()
 							break
-
-						elif data == "TELL_HIM_HES_UGLY":
-							print("You can't even do that righ!")
-							send_message("YOU'RE CHUBBY")
 
 						elif data == "DISCONNECT":
 							if send_message("BYE_BYE"):
