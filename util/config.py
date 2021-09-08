@@ -11,6 +11,7 @@ if not os.path.exists(configLocation):
 	config['DEFAULT'] = { 'MyName': "Raspberry Pi", 'MyAddr': "0.0.0.0", 'MyPort': "27000", 'MyPurpose': "Develop" }
 	config['SCREEN'] = { 'IdleTime': "360" }
 	config['KERRISHAUS_API'] = { 'Token': "NO-TOKEN", 'StatusInterval': 60, 'AutoUpdateAddressAndPort': True, 'DeviceID': 0 }
+	config['DEBUG'] = { 'LightDuration': .08 }
 
 	write_file()
 else:
@@ -28,6 +29,8 @@ api_token = config['KERRISHAUS_API']['Token']
 api_status_interval = float(config['KERRISHAUS_API']['StatusInterval'])
 api_auto_update_addr_and_port = config['KERRISHAUS_API']['AutoUpdateAddressAndPort']
 api_device_id = config['KERRISHAUS_API']['DeviceID']
+
+debug_light_duration = config['DEBUG']['LightDuration']
 
 def updateConfig(section, key, value):
 	config[section][key] = value
