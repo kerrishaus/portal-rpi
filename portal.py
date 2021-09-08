@@ -87,7 +87,7 @@ try:
 	while running: # this is the socket accept loop
 		if api_timer.getElapsedTime() > config.api_status_interval:
 			if "Kiosk" in config.my_purpose:
-				if display.display.is_display_powered():
+				if display.is_display_powered():
 					kerrishausapi.status(2)
 				else:
 					kerrishausapi.status(3)
