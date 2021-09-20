@@ -3,11 +3,11 @@ import subprocess
 from net import kerrishausapi
 
 def display_power_on():
-    kerrishausapi.update(7)
+    kerrishausapi.notify_screen(7)
     return subprocess.run('vcgencmd display_power 1', shell=True)
 
 def display_power_off():
-    kerrishausapi.update(6)
+    kerrishausapi.notify_screen(6)
     return subprocess.run('vcgencmd display_power 0', shell=True)
 
 def is_display_powered():
