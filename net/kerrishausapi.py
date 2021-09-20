@@ -35,10 +35,10 @@ def status(status):
 
 	return post("status", payload)
 
-def notify_screen(onoff):
+def notify_screen(screen_state):
 	payload = {
 		"deviceid": config.api_device_id,
-		"status": status,
+		"status": screen_state,
 		"token": config.api_token
 	}
 
