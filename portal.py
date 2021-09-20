@@ -194,14 +194,16 @@ try:
 							send_message("UNKNOWN_COMMAND")
 					else:
 						print("Data received, but data was invalid.")
+						lights.fail_light()
+
 						data = None; del data
 						invalidDataCount += 1
 
 						if invalidDataCount > 20:
-							print("\ CLOSING SOCKET (too much invalid data)")
+							print("| CLOSING SOCKET (too much invalid data)")
 							csock.close()
-
-						lights.fail_light()
+							break
+						
 			except socket.timeout:
 				print("socket timeout")
 			finally:
