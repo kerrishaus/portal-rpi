@@ -193,6 +193,7 @@ try:
 							send_message("UNKNOWN_COMMAND")
 					else:
 						print("Data received, but data was invalid.")
+						data = None; del data
 						lights.fail_light()
 			except socket.timeout:
 				print("socket timeout")
