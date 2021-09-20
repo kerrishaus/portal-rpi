@@ -24,14 +24,10 @@ def update():
             print("motion detected")
             kerrishausapi.status(4)
 
+            subprocess.run('export DISPLAY=:0 && sudo -u pi xset s reset', shell=True, capture_output=True)
+
             if not display.is_display_powered():
                 display.display_power_on()
-
-                result = subprocess.run('export DISPLAY=:0 && sudo -u pi xset s reset', shell=True, capture_output=True)
-                output = str(result.stdout)
-                f = open("log.txt", "a")
-                f.write(output)
-                f.close()
     else:
         if motion:
             motion = False

@@ -23,6 +23,9 @@ STATUS_ONLINE_SCREEN_OFF    = 3
 STATUS_MOTION_DETECTED      = 4
 STATUS_STOP_MOTION_DETECTED = 5
 
+UPDATE_SCREEN_OFF = 6
+UPDATE_SCREEN_ON  = 7
+
 def status(status):
 	payload = {
 		"deviceid": config.api_device_id,
@@ -31,3 +34,12 @@ def status(status):
 	}
 
 	return post("status", payload)
+
+def notify_screen(onoff):
+	payload = {
+		"deviceid": config.api_device_id,
+		"status": status,
+		"token": config.api_token
+	}
+
+	return post("update", payload)

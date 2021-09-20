@@ -158,7 +158,7 @@ try:
 							send_message(display.is_display_powered())
 
 						elif data == "PLATFORM_INFO":
-							send_message(message = os.name + " " + platform.system() + " " + platform.release())
+							send_message(message = os.name + " " + platform.system() + " " + platform.release() + " " + platform.machine())
 
 						elif data == "GIVE_NAME":
 							send_message(config.my_name)
@@ -179,7 +179,7 @@ try:
 							payload = {
 								"deviceid": config.api_device_id,
 								"name": config.my_name,
-								"platform": os.name + " " + platform.system() + " " + platform.release(),
+								"platform": os.name + " " + platform.system() + " " + platform.release() + " " + platform.machine(),
 								"purpose": config.my_purpose,
 								"screen": screen,
 								"motion": motion_stat,
