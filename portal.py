@@ -106,6 +106,7 @@ try:
 		try:
 			csock, caddr = listen.s.accept()
 			csock.settimeout(.1)
+			invalidDataCount = 0
 			print("/ ACCEPTED SOCKET")
 			try: # this is the client communication loop
 				while True:
@@ -194,6 +195,12 @@ try:
 					else:
 						print("Data received, but data was invalid.")
 						data = None; del data
+						invalidDataCount += 1
+
+						if invalidDataCount > 20:
+							print("\ CLOSING SOCKET (too much invalid data)")
+							csock.close()
+
 						lights.fail_light()
 			except socket.timeout:
 				print("socket timeout")
