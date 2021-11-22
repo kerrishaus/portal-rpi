@@ -4,12 +4,15 @@ from util import config
 from util.gpio import lights
 
 def post(endpoint, payload):
-	r = requests.post("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
-	if r.status_code:
-		lights.send_light()
-	else:
-		lights.fail_light()
-	return r
+	try:
+		r = requests.post("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
+		if r.status_code:
+			lights.send_light()
+		else:
+			lights.fail_light()
+		return r
+	except ConnectionError:
+		print("ConnectionError raised in KerrisHausAPI")
 
 #def get(endpoint, payload):
 #	r = requests.get("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
