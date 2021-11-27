@@ -1,91 +1,79 @@
-import time
-import os
-import platform
-import subprocess
-import socket
-import json
-
+from util.logging import Logger
+from util import config
 from util import gpio
 from util.gpio import lights
+from util.gpio import motion
 from util import timer
-from util import config
 from util import display
-
-from net import listen
-from net import kerrishausapi
 
 from commands import CommandHandler
 from commands import ShutdownCommand
 from commands import RebootCommand
 from commands import PingCommand
 
-cman = CommandHandler.CommandHandler()
-cman.RegisterCommand(ShutdownCommand.ShutdownCommand(), "SHUTDOWN")
-cman.RegisterCommand(RebootCommand.RebootCommand(), "REBOOT")
-cman.RegisterCommand(PingCommand.PingCommand(), "TELL_HIM_HES_UGLY")
+from net import listen
+from net import kerrishausapi
 
-if "Kiosk" in config.my_purpose:
-	from commands import ScreenOffCommand
-	from commands import ScreenOnCommand
+import os
+import platform
+import json
+import socket
 
-	cman.RegisterCommand(ScreenOffCommand.ScreenOffCommand(), "SCREEN_OFF")
-	cman.RegisterCommand(ScreenOnCommand.ScreenOnCommand(), "SCREEN_ON")
+PORTAL_VERSION = 1
 
-VERSION = 1
+class Portal():
+	def Init(self):
+		Logger.info("Initialising Portal")
 
-print("Starting Portal client " + str(VERSION))
+		# config is currently autoloaded
+		#config.load_config()
 
-# config is currently autoloaded
-#config.load_config()
+		print("Starting Portal client " + str(PORTAL_VERSION))
+		print("My name is " + config.my_name + ".")
+		print("I am device " + config.api_device_id)
+		print("My purpose is " + config.my_purpose)
 
-print("My name is " + config.my_name + ".")
-print("I am device " + config.api_device_id)
-print("My purpose is " + config.my_purpose)
+		gpio.setup()
+		lights.setup()
+		listen.setup()
 
-gpio.setup()
-lights.setup()
-listen.setup()
+		if "Motion" in config.my_purpose:
+			motion.setup()
 
-if not kerrishausapi.status(1):
-	print("failed to alert api of status")
+		self.cman = CommandHandler.CommandHandler()
 
-lights.send_light()
+		self.cman = CommandHandler.CommandHandler()
+		self.cman.RegisterCommand(ShutdownCommand.ShutdownCommand(), "SHUTDOWN")
+		self.cman.RegisterCommand(RebootCommand.RebootCommand(), "REBOOT")
+		self.cman.RegisterCommand(PingCommand.PingCommand(), "TELL_HIM_HES_UGLY")
 
-print("Portal Client is ready.")
+		if "Kiosk" in config.my_purpose:
+			from commands import ScreenOffCommand
+			from commands import ScreenOnCommand
 
-if "Motion" in config.my_purpose:
-	from util.gpio import motion
-	motion.setup()
+			self.cman.RegisterCommand(ScreenOffCommand.ScreenOffCommand(), "SCREEN_OFF")
+			self.cman.RegisterCommand(ScreenOnCommand.ScreenOnCommand(), "SCREEN_ON")
 
-def shutdown():
-	print("Portal service is stopping...")
+		self.api_timer = timer.Timer()
+		self.light_timer = timer.Timer()
 
-	if not kerrishausapi.status(0):
-		print("failed to notify api of shutdown")
-		lights.fail_light()
-		
-	lights.fail_light(3)
-		
-	gpio.cleanup()
-	listen.s.close()
+		self.running = True
 
-	print("Have a good night.")
+		Logger.info("I'm ready! I'm ready! I'm ready!")
+		return
 
-def send_message(message):
-	sent = csock.send(message.encode())
-	if sent != 0:
-		lights.send_light()
-	else:
-		lights.fail_light()
-	return sent
+	def Cleanup(self):
+		print("Portal service is stopping...")
+		self.running = False
+				
+		gpio.cleanup()
+		listen.s.close()
 
-api_timer = timer.Timer()
-light_timer = timer.Timer()
+		kerrishausapi.status(0)
+		Logger.info("Have a good night.")
 
-try:
-	running = True
-	while running: # this is the socket accept loop
-		if api_timer.getElapsedTime() > config.api_status_interval:
+	def Update(self):
+		if self.api_timer.getElapsedTime() > config.api_status_interval:
 			if "Kiosk" in config.my_purpose:
 				if display.is_display_powered():
 					kerrishausapi.status(2)
@@ -93,12 +81,8 @@ try:
 					kerrishausapi.status(3)
 			else:
 				kerrishausapi.status(1)
-			api_timer.reset()
 
-		#if display.is_display_powered():
-		#	if display.get_idle_time() > (config.screen_idle_time * 1000):
-		#		display.display_power_off()
-		#		subprocess.run('export DISPLAY=:0 && xset s reset', shell=True)
+			self.api_timer.reset()
 
 		if "Motion" in config.my_purpose:
 			motion.update()
@@ -117,15 +101,15 @@ try:
 						data = data.decode()
 						print("> " + data)
 
-						cman.runCommand(data)
+						self.cman.runCommand(data)
 
 						if data == "DISCONNECT":
-							if send_message("BYE_BYE"):
+							if listen.send_message("BYE_BYE", csock):
 								csock.close()
 								break
 
 						elif data == "SET_NAME":
-							send_message("OKAY_GIVE_NAME")
+							listen.send_message("OKAY_GIVE_NAME", csock)
 
 							data = csock.recv(1024)
 							if data:
@@ -133,13 +117,13 @@ try:
 								config.updateConfig("DEFAULT", "MyName", new_name)
 								config.my_name = new_name
 								print("my new name is " + config.my_name)
-								send_message("NAME_SET")
+								listen.send_message("NAME_SET", csock)
 							else:
 								print("NO name given")
-								send_message("FAIL_INVALID_DATA")
+								listen.send_message("FAIL_INVALID_DATA", csock)
 
 						elif data == "SET_API_INTERVAL":
-							send_message("OKAY_GIVE_INTERVAL")
+							listen.send_message("OKAY_GIVE_INTERVAL", csock)
 
 							data = csock.recv(1024)
 							if data:
@@ -147,22 +131,22 @@ try:
 								config.updateConfig("KUNINDUSTRIES_API", "StatusInterval", new_interval)
 								config.api_status_interval = new_interval
 								print("Status interval set to " + config.api_status_interval)
-								send_message("INTERVAL_SET")
+								listen.send_message("INTERVAL_SET", csock)
 							else:
 								print("Data is invalid.")
-								send_message("FAIL_INVALID_DATA")
+								listen.send_message("FAIL_INVALID_DATA", csock)
 
 						elif data == "GIVE_PURPOSE":
-							send_message(config.my_purpose)
+							listen.send_message(config.my_purpose, csock)
 
 						elif data == "SCREEN_STATUS":
-							send_message(display.is_display_powered())
+							listen.send_message(display.is_display_powered(), csock)
 
 						elif data == "PLATFORM_INFO":
-							send_message(message = os.name + " " + platform.system() + " " + platform.release() + " " + platform.machine())
+							listen.send_message(os.name + " " + platform.system() + " " + platform.release() + " " + platform.machine(), csock)
 
 						elif data == "GIVE_NAME":
-							send_message(config.my_name)
+							listen.send_message(config.my_name, csock)
 
 						elif data == "GIVE_GENERAL":
 							if "Kiosk" in config.my_purpose:
@@ -188,12 +172,12 @@ try:
 
 							payload = json.dumps(payload)
 
-							send_message(payload)
+							listen.send_message(payload, csock)
 
 						else:
-							send_message("UNKNOWN_COMMAND")
+							listen.send_message("UNKNOWN_COMMAND", csock)
 					else:
-						print("Data received, but data was invalid.")
+						Logger.error("Data received, but data was invalid.")
 						lights.fail_light()
 
 						data = None; del data
@@ -205,15 +189,10 @@ try:
 							break
 						
 			except socket.timeout:
-				print("socket timeout")
+				Logger.warn("Socket timed out.")
 			finally:
 				print("\ CLOSING SOCKET")
 				csock.close()
-		except socket.timeout:
-			continue
-except KeyboardInterrupt:
-	print("STOP")
-	shutdown()
-	exit()
 
-shutdown()
+		except socket.timeout:
+			Logger.warn("Socket timed out.")
