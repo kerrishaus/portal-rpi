@@ -11,8 +11,8 @@ def post(endpoint, payload):
 		else:
 			lights.fail_light()
 		return r
-	except ConnectionError:
-		print("ConnectionError raised in KerrisHausAPI")
+	except Exception as e:
+		print("Exception raised in KerrisHausAPI... typical.")
 
 #def get(endpoint, payload):
 #	r = requests.get("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
