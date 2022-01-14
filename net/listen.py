@@ -16,4 +16,4 @@ def setup():
 
 	s.settimeout(.1)
 	
-	print("Listener started on port " + string(config.my_port))
+	print("Listener started on port " + str(config.my_port))
