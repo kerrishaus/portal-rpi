@@ -1,5 +1,6 @@
 #install playsound
 python3 -m pip install playsound
+apt install python3-gst-1.0
 
 # create the systemd service
 touch /etc/systemd/system/portal.service
