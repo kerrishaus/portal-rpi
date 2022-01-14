@@ -1,4 +1,5 @@
 import requests
+from requests import get
 
 from util import config
 from util.gpio import lights
