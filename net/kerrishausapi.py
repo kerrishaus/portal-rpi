@@ -3,6 +3,9 @@ import requests
 from util import config
 from util.gpio import lights
 
+ip = get('https://api.ipify.org').content.decode('utf8')
+print("This device's public ip is: {}".format(ip))
+
 def post(endpoint, payload):
 	try:
 		r = requests.post("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
@@ -33,7 +36,8 @@ def status(status):
 	payload = {
 		"deviceid": config.api_device_id,
 		"status": status,
-		"token": config.api_token
+		"token": config.api_token,
+		"ip": ip
 	}
 
 	return post("status", payload)
