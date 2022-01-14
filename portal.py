@@ -23,7 +23,7 @@ from urllib.request import urlopen
 from zipfile import ZipFile
 
 # gonna try downloading sounds and playing them
-zipurl = 'Valid URL to zip file'
+zipurl = 'https://kerrishaus.com/packages/portal-rpi-sounds.zip'
     # Download the file from the URL
 zipresp = urlopen(zipurl)
     # Create a new file on the hard drive
