@@ -1,3 +1,7 @@
+#install playsound
+python3 -m pip install playsound
+
+# create the systemd service
 touch /etc/systemd/system/portal.service
 cd /etc/systemd/system/
 echo "[Unit]" >> portal.service
