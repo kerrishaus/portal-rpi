@@ -19,26 +19,26 @@ from commands import ShutdownCommand
 from commands import RebootCommand
 from commands import PingCommand
 
-from urllib.request import urlopen
-from zipfile import ZipFile
+#from urllib.request import urlopen
+#from zipfile import ZipFile
 
 # gonna try downloading sounds and playing them
-zipurl = 'https://kerrishaus.com/packages/portal-rpi-sounds.zip'
+#zipurl = 'https://kerrishaus.com/packages/portal-rpi-sounds.zip'
     # Download the file from the URL
-zipresp = urlopen(zipurl)
+#zipresp = urlopen(zipurl)
     # Create a new file on the hard drive
-tempzip = open("./resources/sounds.zip", "wb")
+#tempzip = open("./resources/sounds.zip", "wb")
     # Write the contents of the downloaded file into the new file
-tempzip.write(zipresp.read())
+#tempzip.write(zipresp.read())
     # Close the newly-created file
-tempzip.close()
+#tempzip.close()
     # Re-open the newly-created file with ZipFile()
-zf = ZipFile("./resources/sounds.zip")
+#zf = ZipFile("./resources/sounds.zip")
     # Extract its contents into <extraction_path>
     # note that extractall will automatically create the path
-zf.extractall(path = './resources/sounds')
+#zf.extractall(path = './resources/sounds')
     # close the ZipFile instance
-zf.close()
+#zf.close()
 
 cman = CommandHandler.CommandHandler()
 cman.RegisterCommand(ShutdownCommand.ShutdownCommand(), "SHUTDOWN")
