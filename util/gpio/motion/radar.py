@@ -36,6 +36,7 @@ def motion_stop():
     if motion:
         motion = False
         print("motion no longer detected")
+        kerrishausapi.status(5)
     
 def update():
     global motion
