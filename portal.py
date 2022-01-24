@@ -40,6 +40,14 @@ from commands import PingCommand
     # close the ZipFile instance
 #zf.close()
 
+# TODO: put this in util somewhere
+def is_raspberrypi():
+    try:
+        with io.open('/sys/firmware/devicetree/base/model', 'r') as m:
+            if 'raspberry pi' in m.read().lower(): return True
+    except Exception: pass
+    return False
+
 cman = CommandHandler.CommandHandler()
 cman.RegisterCommand(ShutdownCommand.ShutdownCommand(), "SHUTDOWN")
 cman.RegisterCommand(RebootCommand.RebootCommand(), "REBOOT")
