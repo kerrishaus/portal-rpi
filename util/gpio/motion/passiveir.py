@@ -8,7 +8,7 @@ from util import config
 from util import display
 from net import kerrishausapi
 
-MOTION_SENSOR_PIN = 14
+MOTION_SENSOR_PIN = 17
 
 motion = False
 
