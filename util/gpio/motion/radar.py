@@ -20,7 +20,7 @@ def setup():
 def motion_start():
     global motion
     
-    if not motion
+    if not motion:
         motion = True
         print("motion detected")
         kerrishausapi.status(4)
@@ -40,9 +40,10 @@ def motion_stop():
     
 def update():
     global motion
+    global motion_radar
     
-    radar.when_activated = motion_start
-    radar.when_deactivated = motion_stop
+    motion_radar.when_activated = motion_start
+    motion_radar.when_deactivated = motion_stop
 
     if not motion and display.is_display_powered():
         if display.get_idle_time() > (config.screen_idle_time * 1000):
