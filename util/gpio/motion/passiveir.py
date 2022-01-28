@@ -33,7 +33,7 @@ def update():
             motion = False
             print("motion no longer detected")
         elif not motion and display.is_display_powered():
-            idleTime = dispaly.get_idle_time()
+            idleTime = display.get_idle_time()
             
             if idleTime > (config.screen_idle_time * 1000):
                 print(str(idleTime))
