@@ -22,12 +22,12 @@ def update():
         if not motion:
             motion = True
             print("motion detected")
-            kerrishausapi.status(4)
 
             subprocess.run('export DISPLAY=:0 && sudo -u pi xset s reset', shell=True, capture_output=True)
 
             if not display.is_display_powered():
                 display.display_power_on()
+                kerrishausapi.status(4)
     else:
         if motion:
             motion = False
@@ -35,4 +35,5 @@ def update():
         elif not motion and display.is_display_powered():
             if display.get_idle_time() > (config.screen_idle_time * 1000):
                 display.display_power_off()
+                kerrishausapi.status(5)
     return
