@@ -25,7 +25,7 @@ def motion_start():
         print("motion detected")
         kerrishausapi.status(4)
         
-        subprocess.run("export DISPLAY=:0 && sudo -u pi xset s reset", shell=True, capture_output=True)
+        subprocess.run("export DISPLAY=:0 && sudo -u pi xset s reset", shell=True, capture_output=True) # reset xserver idle time
         
         if not display.is_display_powered():
             display.display_power_on()
