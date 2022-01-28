@@ -33,7 +33,10 @@ def update():
             motion = False
             print("motion no longer detected")
         elif not motion and display.is_display_powered():
-            if display.get_idle_time() > (config.screen_idle_time * 1000):
+            idleTime = dispaly.get_idle_time()
+            
+            if idleTime > (config.screen_idle_time * 1000):
+                print(str(idleTime))
                 display.display_power_off()
                 kerrishausapi.status(5)
     return
