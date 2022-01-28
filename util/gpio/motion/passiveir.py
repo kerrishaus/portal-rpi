@@ -19,11 +19,11 @@ def update():
     global motion
 
     if GPIO.input(MOTION_SENSOR_PIN):
+        subprocess.run('export DISPLAY=:0 && sudo -u pi xset s reset', shell=True, capture_output=True)
+        
         if not motion:
             motion = True
             print("motion detected")
-
-            subprocess.run('export DISPLAY=:0 && sudo -u pi xset s reset', shell=True, capture_output=True)
 
             if not display.is_display_powered():
                 display.display_power_on()
