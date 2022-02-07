@@ -31,7 +31,6 @@ def update():
     else:
         if motion:
             motion = False
-            subprocess.run('export DISPLAY=:0 && sudo -u pi xset s reset', shell=True, capture_output=True)
             print("motion no longer detected")
         elif not motion and display.is_display_powered():
             idleTime = display.get_idle_time()
