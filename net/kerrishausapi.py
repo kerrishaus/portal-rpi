@@ -10,10 +10,11 @@ print("This device's public ip is: {}".format(ip))
 def post(endpoint, payload):
 	try:
 		r = requests.post("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
-		if r.status_code:
+		if r.status_code != 200:
 			lights.send_light()
 		else:
 			lights.fail_light()
+			print("failure in API call" + str(r.status_code))
 		return r
 	except Exception as e:
 		print("Exception raised in KerrisHausAPI... typical.")
