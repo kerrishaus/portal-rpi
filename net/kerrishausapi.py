@@ -10,7 +10,7 @@ print("This device's public ip is: {}".format(ip))
 def post(endpoint, payload):
 	try:
 		r = requests.post("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
-		if r.status_code != 200:
+		if r.status_code == 200:
 			lights.send_light()
 		else:
 			lights.fail_light()
