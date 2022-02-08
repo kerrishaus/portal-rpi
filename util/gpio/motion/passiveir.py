@@ -19,8 +19,6 @@ def update():
     global motion
 
     if GPIO.input(MOTION_SENSOR_PIN):
-        print("motion pin high")
-        
         subprocess.run('export DISPLAY=:0 && sudo -u pi xset s reset', shell=True, capture_output=True)
         
         if not motion:
