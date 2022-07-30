@@ -5,8 +5,6 @@ import subprocess
 import socket
 import json
 
-from util import gpio
-from util.gpio import lights
 from util import timer
 from util import config
 from util import display
@@ -71,8 +69,12 @@ print("My name is " + config.my_name + ".")
 print("I am device " + config.api_device_id)
 print("My purpose is " + config.my_purpose)
 
-gpio.setup()
-lights.setup()
+if is_raspberrypi():
+	from util import gpio
+	from util.gpio import lights
+	gpio.setup()
+	lights.setup()
+	
 listen.setup()
 
 if not kerrishausapi.status(1):
