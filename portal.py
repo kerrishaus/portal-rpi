@@ -173,7 +173,7 @@ try:
 							data = csock.recv(1024)
 							if data:
 								new_interval = data.decode()
-								config.updateConfig("KUNINDUSTRIES_API", "StatusInterval", new_interval)
+								config.updateConfig("KERRISHAUS_API", "StatusInterval", new_interval)
 								config.api_status_interval = new_interval
 								print("Status interval set to " + config.api_status_interval)
 								send_message("INTERVAL_SET")
