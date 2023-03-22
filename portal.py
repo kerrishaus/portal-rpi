@@ -45,8 +45,8 @@ def isRaspberryPi():
             if 'raspberry pi' in m.read().lower(): 
                 return True
             print(m.read())
-    except Exception:
-        pass
+    except Exception as e:
+        print("An exception occured trying to read device model.", e)
 
     return False
 
