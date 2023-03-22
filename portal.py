@@ -80,8 +80,6 @@ if isRaspberryPi():
 	from util.gpio import lights
 	gpio.setup()
 	lights.setup()
-else:
-    print("Not a Raspberry Pi, apparently.")
 	
 listen.setup()
 

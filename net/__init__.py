@@ -1,0 +1,1 @@
+print("A module from the net package was imported.")

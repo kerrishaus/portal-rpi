@@ -1,0 +1,1 @@
+print("A module from the util package was imported.")
