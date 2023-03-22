@@ -3,9 +3,9 @@ import time
 
 from .. import config
 
-FAIL_LED_PIN = 17
-RECV_LED_PIN = 27
-SEND_LED_PIN = 22
+FAIL_LED_PIN = 13
+RECV_LED_PIN = 6
+SEND_LED_PIN = 5
 
 def setup():
     GPIO.setup(RECV_LED_PIN, GPIO.OUT)
