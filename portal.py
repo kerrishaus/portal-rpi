@@ -116,6 +116,7 @@ light_timer = timer.Timer()
 
 try:
 	running = True
+
 	while running: # this is the socket accept loop
 		if api_timer.getElapsedTime() > config.api_status_interval:
 			if "Kiosk" in config.my_purpose:
@@ -125,12 +126,9 @@ try:
 					kerrishausapi.status(3)
 			else:
 				kerrishausapi.status(1)
-			api_timer.reset()
 
-		#if display.is_display_powered():
-		#	if display.get_idle_time() > (config.screen_idle_time * 1000):
-		#		display.display_power_off()
-		#		subprocess.run('export DISPLAY=:0 && xset s reset', shell=True)
+			print("Notified API.")
+			api_timer.reset()
 
 		if "Motion" in config.my_purpose:
 			passiveir.update()
@@ -143,6 +141,7 @@ try:
 			try: # this is the client communication loop
 				while True:
 					data = csock.recv(1024)
+					
 					if data:
 						lights.recv_light()
 
