@@ -14,10 +14,10 @@ def post(endpoint, payload):
 			lights.send_light()
 		else:
 			lights.fail_light()
-			print("failure in API call" + str(r.status_code))
+			print("failure in API call: ", r.status_code)
 		return r
 	except Exception as e:
-		print("Exception raised in KerrisHausAPI... typical.")
+		print("Exception raised in KerrisHausAPI: ", e)
 
 #def get(endpoint, payload):
 #	r = requests.get("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
