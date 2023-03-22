@@ -60,7 +60,7 @@ if "Kiosk" in config.my_purpose:
 
 VERSION = 1
 
-print("Starting Portal client " + str(VERSION))
+print("Starting Portal client ", VERSION)
 
 # config is currently autoloaded
 #config.load_config()
