@@ -39,11 +39,14 @@ from commands import PingCommand
 #zf.close()
 
 # TODO: put this in util somewhere
-def is_raspberrypi():
+def isRaspberryPi():
     try:
         with io.open('/sys/firmware/devicetree/base/model', 'r') as m:
-            if 'raspberry pi' in m.read().lower(): return True
-    except Exception: pass
+            if 'raspberry pi' in m.read().lower(): 
+                return True
+    except Exception:
+        pass
+
     return False
 
 cman = CommandHandler.CommandHandler()
@@ -69,12 +72,14 @@ print("My name is " + config.my_name + ".")
 print("I am device " + config.api_device_id)
 print("My purpose is " + config.my_purpose)
 
-if is_raspberrypi():
+if isRaspberryPi():
 	print("Setting up as Raspberry Pi")
 	from util import gpio
 	from util.gpio import lights
 	gpio.setup()
 	lights.setup()
+else:
+    print("Not a Raspberry Pi, apparently.")
 	
 listen.setup()
 
