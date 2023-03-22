@@ -70,6 +70,7 @@ print("I am device " + config.api_device_id)
 print("My purpose is " + config.my_purpose)
 
 if is_raspberrypi():
+	print("Setting up as Raspberry Pi")
 	from util import gpio
 	from util.gpio import lights
 	gpio.setup()
