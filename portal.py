@@ -44,6 +44,7 @@ def isRaspberryPi():
         with io.open('/sys/firmware/devicetree/base/model', 'r') as m:
             if 'raspberry pi' in m.read().lower(): 
                 return True
+            print(m.read())
     except Exception:
         pass
 
