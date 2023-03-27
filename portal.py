@@ -91,8 +91,8 @@ lights.send_light()
 print("Portal Client is ready.")
 
 if "Motion" in config.my_purpose:
-	from util.gpio.motion import passiveir
-	passiveir.setup()
+	from util.gpio.motion import radar
+	radar.setup()
 
 def shutdown():
 	print("Portal service is stopping...")
@@ -136,7 +136,7 @@ try:
 			api_timer.reset()
 
 		if "Motion" in config.my_purpose:
-			passiveir.update()
+			radar.update()
 
 		try:
 			csock, caddr = listen.s.accept()
@@ -209,7 +209,7 @@ try:
 								screen = False
 
 							if "Motion" in config.my_purpose:
-								motion_stat = passiveir.motion
+								motion_stat = radar.motion
 							else:
 								motion_stat = False
 
