@@ -12,6 +12,7 @@ def post(endpoint, payload):
 		request = requests.post("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
 		if request.status_code == 200:
 			lights.send_light()
+			print("Sent a message to the Kerris Haus API.")
 		else:
 			lights.fail_light()
 			print("Unexpected status code returned by API: ", request.status_code)
