@@ -22,7 +22,7 @@ def update():
         
         if not motion:
             motion = True
-            print("motion detected")
+            print("motion detected by passiveir")
 
             if not display.is_display_powered():
                 display.display_power_on()
@@ -30,7 +30,7 @@ def update():
     else:
         if motion:
             motion = False
-            print("motion no longer detected")
+            print("motion no longer detected by passiveir")
         elif not motion and display.is_display_powered():
             idleTime = display.get_idle_time()
             
