@@ -35,7 +35,7 @@ def update():
             idleTime = display.get_idle_time()
             
             if idleTime > (config.screen_idle_time * 1000):
-                print(str(idleTime))
+                print("idle time limit reached, passiveir is turning off display", str(idleTime))
                 display.display_power_off()
                 kerrishausapi.status(5)
     return
