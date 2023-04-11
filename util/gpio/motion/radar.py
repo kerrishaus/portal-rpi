@@ -12,7 +12,7 @@ from net import kerrishausapi
 MOTION_SENSOR_PIN = 17
 
 motion = False
-motion_radar = DigitalInputDevice(MOTION_SENSOR_PIN, pull_up=False)
+motion_radar = DigitalInputDevice(MOTION_SENSOR_PIN, pull_up=False, bounce_time=5)
 
 def setup():
     GPIO.setup(MOTION_SENSOR_PIN, GPIO.IN)
