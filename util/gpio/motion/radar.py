@@ -22,7 +22,7 @@ def motion_start():
     
     if not motion:
         motion = True
-        print("motion detected")
+        print("motion detected by radar")
         kerrishausapi.status(4)
         
         subprocess.run("export DISPLAY=:0 && sudo -u pi xset s reset", shell=True, capture_output=True) # reset xserver idle time
@@ -35,7 +35,7 @@ def motion_stop():
     
     if motion:
         motion = False
-        print("motion no longer detected")
+        print("motion no longer detected by radar")
         kerrishausapi.status(5)
     
 def update():
