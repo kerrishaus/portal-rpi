@@ -1,0 +1,1 @@
+print("A module from the commands package was imported.")

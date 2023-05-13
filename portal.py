@@ -4,6 +4,7 @@ import platform
 import subprocess
 import json
 import sys
+import io
 
 from util import timer
 from util import config
@@ -60,11 +61,15 @@ if len(sys.argv) > 0:
 #zf.close()
 
 # TODO: put this in util somewhere
-def is_raspberrypi():
+def isRaspberryPi():
     try:
         with io.open('/sys/firmware/devicetree/base/model', 'r') as m:
-            if 'raspberry pi' in m.read().lower(): return True
-    except Exception: pass
+            if 'raspberry pi' in m.read().lower(): 
+                return True
+            print(m.read())
+    except Exception as e:
+        print("An exception occured trying to read device model.", e)
+
     return False
 
 cman = CommandHandler.CommandHandler()
@@ -81,7 +86,7 @@ if "Kiosk" in config.my_purpose:
 
 VERSION = 1
 
-print("Starting Portal client " + str(VERSION))
+print("Starting Portal client ", VERSION)
 
 # config is currently autoloaded
 #config.load_config()
@@ -90,7 +95,8 @@ print("My name is " + config.my_name + ".")
 print("I am device " + config.api_device_id)
 print("My purpose is " + config.my_purpose)
 
-if is_raspberrypi():
+if isRaspberryPi():
+	print("Setting up as Raspberry Pi")
 	from util import gpio
 	from util.gpio import lights
 	gpio.setup()
@@ -136,6 +142,7 @@ light_timer = timer.Timer()
 
 try:
 	running = True
+
 	while running: # this is the socket accept loop
 		if api_timer.getElapsedTime() > config.api_status_interval:
 			if "Kiosk" in config.my_purpose:
@@ -145,12 +152,9 @@ try:
 					kerrishausapi.status(3)
 			else:
 				kerrishausapi.status(1)
-			api_timer.reset()
 
-		#if display.is_display_powered():
-		#	if display.get_idle_time() > (config.screen_idle_time * 1000):
-		#		display.display_power_off()
-		#		subprocess.run('export DISPLAY=:0 && xset s reset', shell=True)
+			print("Notified API.")
+			api_timer.reset()
 
 		if "Motion" in config.my_purpose:
 			passiveir.update()
@@ -163,6 +167,7 @@ try:
 			try: # this is the client communication loop
 				while True:
 					data = csock.recv(1024)
+					
 					if data:
 						lights.recv_light()
 
