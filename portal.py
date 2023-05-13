@@ -121,9 +121,9 @@ def shutdown():
 	if not kerrishausapi.status(0):
 		print("failed to notify api of shutdown")
 		lights.fail_light()
-		
+
 	lights.fail_light(3)
-		
+
 	gpio.cleanup()
 	Socket.portalSocket.close()
 
