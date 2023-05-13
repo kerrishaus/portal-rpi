@@ -2,7 +2,6 @@ import RPi.GPIO as GPIO
 
 import subprocess
 
-from util import timer
 from util import config
 from util import display
 from net import kerrishausapi

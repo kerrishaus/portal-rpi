@@ -105,8 +105,7 @@ if isRaspberryPi():
 
 Socket.setup()
 
-if not kerrishausapi.status(1):
-	print("failed to alert api of status")
+kerrishausapi.status(1)
 
 lights.send_light()
 
@@ -120,7 +119,6 @@ def shutdown():
 	print("Portal service is stopping...")
 
 	if not kerrishausapi.status(0):
-		print("failed to notify api of shutdown")
 		lights.fail_light()
 
 	lights.fail_light(3)
@@ -154,7 +152,6 @@ try:
 			else:
 				kerrishausapi.status(1)
 
-			print("Notified API.")
 			api_timer.reset()
 
 		if "Motion" in config.my_purpose:
