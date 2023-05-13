@@ -14,7 +14,6 @@ def is_display_powered():
     # ask if the display is already powered on
     result = subprocess.run('vcgencmd display_power -1', shell=True, capture_output=True)
     output = str(result.stdout)
-    print(output)
     if str(output) == "b'display_power=1\\n'":
         return True
     else:

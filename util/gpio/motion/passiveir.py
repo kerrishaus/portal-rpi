@@ -40,7 +40,11 @@ def update():
 
     # FIXME: it's possible that is_display_powered here is always returning true
     # and causing us to attempt to power off the display over and over
-    if not motion and display.is_display_powered():
+    if not motion:
+        if not display.is_display_powered():
+            print("Display is not powered on.")
+            return
+        
         idleTime = display.get_idle_time()
         
         if idleTime > (config.screen_idle_time * 1000):
