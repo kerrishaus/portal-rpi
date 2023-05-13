@@ -15,10 +15,8 @@ def is_display_powered():
     result = subprocess.run('vcgencmd display_power -1', shell=True, capture_output=True)
     output = str(result.stdout)
     if str(output) == "b'display_power=1\\n'":
-        print("Display is powered.")
         return True
     else:
-        print("Display is not powered.")
         return False
 
 def get_idle_time():
