@@ -5,6 +5,7 @@ import subprocess
 import json
 import sys
 import io
+import socket
 
 from util import timer
 from util import config
