@@ -2,20 +2,41 @@ import time
 import os
 import platform
 import subprocess
-import socket
 import json
+import sys
 
 from util import timer
 from util import config
 from util import display
 
-from net import listen
+from net import Socket
 from net import kerrishausapi
 
 from commands import CommandHandler
 from commands import ShutdownCommand
 from commands import RebootCommand
 from commands import PingCommand
+
+if len(sys.argv) > 0:
+	if "-install" in sys.argv:
+		subprocess.run("""
+			touch /etc/systemd/system/portal.service
+			cd /etc/systemd/system/
+			echo "[Unit]" >> portal.service
+			echo "Descrpition=Portal Service" >> portal.service
+			echo "After=mutli-user.target" >> portal.service
+			echo "" >> portal.service
+			echo "[Service]" >> portal.service
+			echo "Type=idle" >> portal.service
+			echo "Restart=always" >> portal.service
+			echo "ExecStart=/usr/bin/python3 /home/pi/portal-rpi/portal.py" >> portal.service
+			echo "" >> portal.service
+			echo "[Install]" >> portal.service
+			echo "WantedBy=multi-user.target" >> portal.service
+			systemctl daemon-reload
+			systemctl enable portal.service
+			systemctl start portal.service
+		""")
 
 #from urllib.request import urlopen
 #from zipfile import ZipFile
@@ -74,8 +95,8 @@ if is_raspberrypi():
 	from util.gpio import lights
 	gpio.setup()
 	lights.setup()
-	
-listen.setup()
+
+Socket.setup()
 
 if not kerrishausapi.status(1):
 	print("failed to alert api of status")
@@ -98,7 +119,7 @@ def shutdown():
 	lights.fail_light(3)
 		
 	gpio.cleanup()
-	listen.s.close()
+	Socket.portalSocket.close()
 
 	print("Have a good night.")
 
@@ -135,7 +156,7 @@ try:
 			passiveir.update()
 
 		try:
-			csock, caddr = listen.s.accept()
+			csock, caddr = Socket.portalSocket.accept()
 			csock.settimeout(.1)
 			invalidDataCount = 0
 			print("/ ACCEPTED SOCKET")

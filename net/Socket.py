@@ -4,16 +4,16 @@ import selectors
 from util import config
 from util.gpio import lights
 
-s = socket.socket()
+portalSocket = socket.socket()
 
 def setup():
-	s.bind(("0.0.0.0", config.my_port))
+	portalSocket.bind(("0.0.0.0", config.my_port))
 
-	if s.listen():
+	if portalSocket.listen():
 		lights.send_light()
 	else:
 		lights.fail_light()
 
-	s.settimeout(.1)
+	portalSocket.settimeout(.1)
 	
 	print("Listener started on port " + str(config.my_port))
