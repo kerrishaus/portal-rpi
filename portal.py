@@ -26,7 +26,8 @@ if len(sys.argv) > 0:
 			cd /etc/systemd/system/
 			echo "[Unit]" >> portal.service
 			echo "Descrpition=Portal Service" >> portal.service
-			echo "After=mutli-user.target" >> portal.service
+			echo "Wants=network-online.target" >> portal.service
+			echo "After=network-online.target" >> portal.service
 			echo "" >> portal.service
 			echo "[Service]" >> portal.service
 			echo "Type=idle" >> portal.service
