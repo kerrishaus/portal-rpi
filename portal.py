@@ -21,6 +21,7 @@ from commands import PingCommand
 
 if len(sys.argv) > 0:
 	if "-install" in sys.argv:
+		# TODO: make sure we have privileges to do this
 		subprocess.run('''
 			echo "Installing systemd services."
 
