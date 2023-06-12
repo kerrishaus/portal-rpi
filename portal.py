@@ -22,7 +22,7 @@ from commands import PingCommand
 if len(sys.argv) > 0:
 	if "-install" in sys.argv:
 		subprocess.run("""
-                        echo "Installing systemd services."
+			echo "Installing systemd services."
 
 			cd /etc/systemd/system/
 			touch portal.service
