@@ -21,7 +21,7 @@ from commands import PingCommand
 
 if len(sys.argv) > 0:
 	if "-install" in sys.argv:
-		subprocess.run("""
+		subprocess.run('''
 			echo "Installing systemd services."
 
 			cd /etc/systemd/system/
@@ -65,7 +65,7 @@ if len(sys.argv) > 0:
 			systemctl enable portal-gui.service
 
 			echo "Installed and enabled Portal Client Backend and Portal GUI services."
-		""")
+		''', shell=True)
 
 #from urllib.request import urlopen
 #from zipfile import ZipFile
