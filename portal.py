@@ -22,23 +22,47 @@ from commands import PingCommand
 if len(sys.argv) > 0:
 	if "-install" in sys.argv:
 		subprocess.run("""
-			touch /etc/systemd/system/portal.service
 			cd /etc/systemd/system/
-			echo "[Unit]" >> portal.service
-			echo "Descrpition=Portal Service" >> portal.service
-			echo "Wants=network-online.target" >> portal.service
-			echo "After=network-online.target" >> portal.service
-			echo "" >> portal.service
-			echo "[Service]" >> portal.service
-			echo "Type=idle" >> portal.service
-			echo "Restart=always" >> portal.service
-			echo "ExecStart=/usr/bin/python3 /home/pi/portal-rpi/portal.py" >> portal.service
-			echo "" >> portal.service
-			echo "[Install]" >> portal.service
-			echo "WantedBy=multi-user.target" >> portal.service
+			touch portal.service
+			
+			{
+				echo "[Unit]"
+				echo "Descrpition=Portal Client Backend"
+				echo "Wants=network-online.target"
+				echo "After=network-online.target"
+				echo ""
+				echo "[Service]"
+				echo "Type=simple"
+				echo "Restart=always"
+				echo "ExecStart=/usr/bin/python3 /home/pi/portal-rpi/portal.py"
+				echo ""
+				echo "[Install]"
+				echo "WantedBy=multi-user.target"
+			} >> portal.service
+			
+			touch portal-gui.service
+			
+			{
+				echo "[Unit]"
+				echo "Descrpition=Portal GUI"
+				echo "Requires=portal.service"
+				echo "After=network-online.target"
+				echo ""
+				echo "[Service]"
+				echo "Type=simple"
+				echo "Restart=always"
+				# make sure to modify chrome config and change exited cleanly to true
+				echo "ExecStart=chromium-browser --noerrdialogs --disable-infobars --disable-error-bubbles --ignore-certificate-errors --check-for-update-interval=31536000 --kiosk /home/pi/index.html
+				echo ""
+				echo "[Install]"
+				echo "WantedBy=multi-user.target"
+			} >> portal-gui.service
+			
 			systemctl daemon-reload
 			systemctl enable portal.service
-			systemctl start portal.service
+			systemctl enable portal-gui.service
+
+			echo "Installed and enabled Portal Client Backend and Portal GUI services."
 		""")
 
 #from urllib.request import urlopen
