@@ -30,7 +30,7 @@ if len(sys.argv) > 0:
 
 			{
 				echo "[Unit]"
-				echo "Descrpition=Portal Client Backend"
+				echo "Description=Portal Client Backend"
 				echo "Wants=network-online.target"
 				echo "After=network-online.target"
 				echo ""
@@ -48,7 +48,7 @@ if len(sys.argv) > 0:
 
 			{
 				echo "[Unit]"
-				echo "Descrpition=Portal GUI"
+				echo "Description=Portal GUI"
 				echo "Requires=portal.service"
 				echo "After=network-online.target"
 				echo ""
@@ -57,7 +57,8 @@ if len(sys.argv) > 0:
 				echo "Type=simple"
 				echo "Restart=always"
 				# make sure to modify chrome config and change exited cleanly to true and export the proper display
-				echo "ExecStart=export DISPLAY=:0 && chromium-browser --noerrdialogs --disable-infobars --disable-error-bubbles --ignore-certificate-errors --check-for-update-interval=31536000 --kiosk /home/pi/index.html"
+				echo "Environment=DISPLAY=:0"
+				echo "ExecStart=chromium-browser --noerrdialogs --disable-infobars --disable-error-bubbles --ignore-certificate-errors --check-for-update-interval=31536000 --kiosk /home/pi/index.html"
 				echo ""
 				echo "[Install]"
 				echo "WantedBy=multi-user.target"
