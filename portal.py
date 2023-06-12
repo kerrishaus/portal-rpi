@@ -34,13 +34,14 @@ if len(sys.argv) > 0:
 				echo "After=network-online.target"
 				echo ""
 				echo "[Service]"
+				echo "User=pi"
 				echo "Type=simple"
 				echo "Restart=always"
 				echo "ExecStart=/usr/bin/python3 /home/pi/portal-rpi/portal.py"
 				echo ""
 				echo "[Install]"
 				echo "WantedBy=multi-user.target"
-			} >> portal.service
+			} > portal.service
 
 			touch portal-gui.service
 
@@ -51,6 +52,7 @@ if len(sys.argv) > 0:
 				echo "After=network-online.target"
 				echo ""
 				echo "[Service]"
+				echo "User=pi"
 				echo "Type=simple"
 				echo "Restart=always"
 				# make sure to modify chrome config and change exited cleanly to true
@@ -58,7 +60,7 @@ if len(sys.argv) > 0:
 				echo ""
 				echo "[Install]"
 				echo "WantedBy=multi-user.target"
-			} >> portal-gui.service
+			} > portal-gui.service
 
 			systemctl daemon-reload
 			systemctl enable portal.service
