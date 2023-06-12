@@ -54,7 +54,7 @@ if len(sys.argv) > 0:
 				echo "Type=simple"
 				echo "Restart=always"
 				# make sure to modify chrome config and change exited cleanly to true
-				echo "ExecStart=chromium-browser --noerrdialogs --disable-infobars --disable-error-bubbles --ignore-certificate-errors --check-for-update-interval=31536000 --kiosk /home/pi/index.html
+				echo "ExecStart=chromium-browser --noerrdialogs --disable-infobars --disable-error-bubbles --ignore-certificate-errors --check-for-update-interval=31536000 --kiosk /home/pi/index.html"
 				echo ""
 				echo "[Install]"
 				echo "WantedBy=multi-user.target"

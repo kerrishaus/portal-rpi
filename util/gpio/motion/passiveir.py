@@ -42,7 +42,6 @@ def update():
     # and causing us to attempt to power off the display over and over
     if not motion:
         if not display.is_display_powered():
-            print("Display is not powered on.")
             return
         
         idleTime = display.get_idle_time()
