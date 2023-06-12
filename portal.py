@@ -22,9 +22,11 @@ from commands import PingCommand
 if len(sys.argv) > 0:
 	if "-install" in sys.argv:
 		subprocess.run("""
+                        echo "Installing systemd services."
+
 			cd /etc/systemd/system/
 			touch portal.service
-			
+
 			{
 				echo "[Unit]"
 				echo "Descrpition=Portal Client Backend"
@@ -39,9 +41,9 @@ if len(sys.argv) > 0:
 				echo "[Install]"
 				echo "WantedBy=multi-user.target"
 			} >> portal.service
-			
+
 			touch portal-gui.service
-			
+
 			{
 				echo "[Unit]"
 				echo "Descrpition=Portal GUI"
@@ -57,7 +59,7 @@ if len(sys.argv) > 0:
 				echo "[Install]"
 				echo "WantedBy=multi-user.target"
 			} >> portal-gui.service
-			
+
 			systemctl daemon-reload
 			systemctl enable portal.service
 			systemctl enable portal-gui.service
