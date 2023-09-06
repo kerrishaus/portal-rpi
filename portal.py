@@ -58,7 +58,7 @@ if len(sys.argv) > 0:
 				echo "Restart=always"
 				# make sure to modify chrome config and change exited cleanly to true and export the proper display
 				echo "Environment=DISPLAY=:0"
-				echo "ExecStart=chromium-browser --noerrdialogs --disable-infobars --disable-error-bubbles --ignore-certificate-errors --check-for-update-interval=31536000 --autoplay-policy=no-user-gesture-required --kiosk ~/portal_login.html"
+				echo "ExecStart=chromium-browser --noerrdialogs --disable-infobars --disable-error-bubbles --ignore-certificate-errors --check-for-update-interval=31536000 --autoplay-policy=no-user-gesture-required --kiosk /home/kiosk/portal_login.html"
 				echo ""
 				echo "[Install]"
 				echo "WantedBy=multi-user.target"
