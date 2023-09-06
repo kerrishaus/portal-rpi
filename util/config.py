@@ -1,7 +1,7 @@
 import configparser
 import os
 
-configLocation = "./config.ini"
+configLocation = "/home/kiosk/portal-rpi/config.ini"
 config = configparser.ConfigParser()
 
 def write_file():
