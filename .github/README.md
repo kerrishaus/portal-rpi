@@ -1,6 +1,9 @@
 # portal-rpi
 interface between the rpi and the portal
 
+# Networking
+The system binds a listener to a TCP socket, utilising the port specified in `config.ini`, to receive commands from the Portal.
+
 # Kiosk,Motion module.
 The Kiosk or Motion modules require the use of a HC-SR501 PIR or RCWL-0516 radar sensor, and will power the current display off or on after a set period of user inactivity as reported by xscreensaver.
 
