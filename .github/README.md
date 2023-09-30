@@ -10,6 +10,9 @@ To reduce complexity and resource requirements, the system is broken up into sev
 ## Kiosk
 This module requires the `Motion` module to turn the screen off after a period of inactivity, reported by `xscreensaver` using [xprintidle](https://github.com/g0hl1n/xprintidle).
 
+If you wish to access streaming services, it may be necessary to install Widevine.  
+`sudo apt install libwidevinecdm0`
+
 ## Motion
 This module requires a method of sensing, and particularly supports either a HC-SR501 PIR or an RCWL-0516 radar sensor.
 
