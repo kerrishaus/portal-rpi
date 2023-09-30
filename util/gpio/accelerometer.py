@@ -1,0 +1,1 @@
+# probably need to install pip and smbus if they aren't installed when this package is initialised
