@@ -48,5 +48,3 @@ def update():
     if not motion and display.is_display_powered():
         if display.get_idle_time() > (config.screen_idle_time * 1000):
             display.display_power_off()
-
-    return
