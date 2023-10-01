@@ -41,6 +41,7 @@ def status(status):
 		"status": status,
 		"token": config.api_token,
 		"ip": ip
+		# also include local ip for easy local network discovery
 	}
 
 	return post("status", payload)
