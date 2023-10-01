@@ -142,9 +142,12 @@ lights.send_light()
 
 print("Portal Client is ready.")
 
-if "Motion" in config.my_purpose:
+if "Motion-PassiveIR" in config.my_purpose:
 	from util.gpio.motion import passiveir
 	passiveir.setup()
+elif "Motion-Radar" in config.my_purpose:
+	from util.gpio.motion import radar
+	radar.setup()
 
 def shutdown():
 	print("Portal service is stopping...")
@@ -185,8 +188,10 @@ try:
 
 			api_timer.reset()
 
-		if "Motion" in config.my_purpose:
+		if "Motion-PassiveIR" in config.my_purpose:
 			passiveir.update()
+		elif "Motion-Radar" in config.my_purpose:
+			radar.update()
 
 		try:
 			csock, caddr = Socket.portalSocket.accept()
@@ -258,8 +263,10 @@ try:
 							else:
 								screen = False
 
-							if "Motion" in config.my_purpose:
+							if "Motion-PassiveIR" in config.my_purpose:
 								motion_stat = passiveir.motion
+							elif "Motion-PassiveIR" in config.my_purpose:
+								motion_stat = radar.motion
 							else:
 								motion_stat = False
 
