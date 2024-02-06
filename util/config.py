@@ -5,21 +5,48 @@ configLocation = "/home/kiosk/portal-rpi/config.ini"
 config = configparser.ConfigParser()
 
 def write_file():
-	config.write(open(configLocation, 'w'))
+	try:
+		config.write(open(configLocation, 'w'))
 
-if not os.path.exists(configLocation):
-	config['DEFAULT'] = { 'MyName': "Raspberry Pi", 'MyAddr': "0.0.0.0", 'MyPort': "27000", 'MyPurpose': "Develop" }
-	config['SCREEN'] = { 'IdleTime': "360" }
-	config['KERRISHAUS_API'] = { 'Token': "NO-TOKEN", 'StatusInterval': 60, 'AutoUpdateAddressAndPort': True, 'DeviceID': 0 }
-	config['DEBUG'] = { 'LightDuration': .08 }
+		return True
+	except:
+		print("Failed to write to configuration file.")
 
-	write_file()
+	return False
+
+if not os.path.isfile(configLocation):
+	config['DEFAULT'] = {
+		'MyName': "Raspberry Pi",
+		'MyAddr': "0.0.0.0",
+		'MyPort': 27000,
+		'MyPurpose': "Develop" 
+	}
+
+	config['SCREEN'] = {
+		'IdleTime': "360"
+	}
+
+	config['KERRISHAUS_API'] = {
+		'Token': "NO-TOKEN",
+		'StatusInterval': 60,
+		'AutoUpdateAddressAndPort': True,
+		'DeviceID': 0
+	}
+
+	config['DEBUG'] = {
+		'LightDuration': .08
+	}
+
+	if not write_file():
+		print("Attempting to save configuration to working directory.")
+		configLocation = "./config.ini"
+		write_file()
 else:
 	config.read(configLocation)
 
-my_name = config['DEFAULT']['MyName']
-my_addr = config['DEFAULT']['MyAddr']
-my_port = int(config['DEFAULT']['MyPort'])
+my_name    = config['DEFAULT']['MyName']
+my_addr    = config['DEFAULT']['MyAddr']
+my_port    = int(config['DEFAULT']['MyPort'])
 my_purpose = config['DEFAULT']['MyPurpose']
 
 # this value is in seconds
