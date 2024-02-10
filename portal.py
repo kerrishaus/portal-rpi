@@ -38,7 +38,7 @@ if len(sys.argv) > 0:
 				echo "User=kiosk"
 				echo "Type=simple"
 				echo "Restart=always"
-				echo "ExecStart=/usr/bin/python3 /home/kiosk/portal-rpi/portal.py"
+				echo "ExecStart=/usr/bin/python3 -u /home/kiosk/portal-rpi/portal.py"
 				echo ""
 				echo "[Install]"
 				echo "WantedBy=multi-user.target"
