@@ -8,7 +8,7 @@ The system binds a listener to a TCP socket, utilising the port specified in `co
 To reduce complexity and resource requirements, the system is broken up into several modules.
 
 ## Kiosk
-This module requires the `Motion` module to turn the screen off after a period of inactivity, reported by `xscreensaver` using [xprintidle](https://github.com/g0hl1n/xprintidle).
+This module requires the `Motion` module to turn the screen off after a period of inactivity, reported by `xscreensaver` using [xprintidle](https://github.com/g0hl1n/xprintidle). Requires both `screensaver`, and `xprintidle`.
 
 If you wish to access streaming services, it may be necessary to install Widevine.  
 `sudo apt install libwidevinecdm0`
