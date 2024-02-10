@@ -28,6 +28,7 @@ def motion_start():
         subprocess.run("export DISPLAY=:0 && sudo -u pi xset s reset", shell=True, capture_output=True) # reset xserver idle time
         
         if not display.is_display_powered():
+            print("monitor is off, turning it on")
             display.display_power_on()
 
 def motion_stop():
@@ -47,4 +48,5 @@ def update():
 
     if not motion and display.is_display_powered():
         if display.get_idle_time() > (config.screen_idle_time * 1000):
+            print("no motion is detected, idle time is exceeded, and display is on. shutting it off.")
             display.display_power_off()
