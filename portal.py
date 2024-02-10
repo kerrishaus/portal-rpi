@@ -159,7 +159,7 @@ def shutdown():
 
 	gpio.cleanup()
 	Socket.portalSocket.close()
-
+ 
 	print("Have a good night.")
 
 def send_message(message):
@@ -178,6 +178,8 @@ try:
 
 	while running: # this is the socket accept loop
 		if api_timer.getElapsedTime() > config.api_status_interval:
+			print("API timer reached.")
+
 			if "Kiosk" in config.my_purpose:
 				if display.is_display_powered():
 					kerrishausapi.status(2)
