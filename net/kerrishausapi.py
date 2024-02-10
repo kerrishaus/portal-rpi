@@ -20,6 +20,8 @@ def post(endpoint, payload):
 	except Exception as exception:
 		print("Exception raised in Kerris Haus API: ", exception)
 
+	print("Posted to Kerris Haus API");
+
 #def get(endpoint, payload):
 #	r = requests.get("https://api.kerrishaus.com/portal/devices/" + endpoint + ".php", data = payload)
 #	lights.send_light()
